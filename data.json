@@ -1,0 +1,211 @@
+{
+  "profile": {
+    "name": "BCMOJANG",
+    "uid": "1248933612",
+    "avatar": "https://i0.hdslb.com/bfs/face/9e3222c3c98239e715a27c515c354a638f3bc59d.jpg",
+    "level": "Lv.5",
+    "vip": "大会员",
+    "signature": "2024差点入选百大up。一个鸽子。",
+    "bilibili": "https://space.bilibili.com/1248933612",
+    "qq_group": "3630615032",
+    "github": "https://github.com/BCMOJANG"
+  },
+  "stats": {
+    "followers": 274,
+    "videos": 74,
+    "views": 1059000,
+    "likes": 22302
+  },
+  "hero": {
+    "badge": "热门视频",
+    "title_line1": "全网首发 MINI4PRO",
+    "title_line2": "无GPS三楼返航炸机记录",
+    "description": "大疆 MINI 4 PRO 在没有 GPS 信号的情况下尝试三楼返航，结果如何？全程实录，给飞友们提个醒。",
+    "duration": "01:53",
+    "views": "1.0 万",
+    "likes": "13",
+    "date": "2025-09-19",
+    "video_url": "https://www.bilibili.com/video/BV1LQWGzzEFR/",
+    "thumbnail": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
+  },
+  "categories": [
+    { "id": "all", "name": "全部" },
+    { "id": "dji", "name": "大疆" },
+    { "id": "xiaomi", "name": "小米" },
+    { "id": "mc", "name": "Minecraft" },
+    { "id": "tutorial", "name": "教程" },
+    { "id": "other", "name": "其他" }
+  ],
+  "videos": [
+    {
+      "id": "BV1Rp4y137md",
+      "category": "tutorial",
+      "title": "创维电视安装第三方应用",
+      "excerpt": "失败/省流请看置顶评论，附蓝奏云和百度云链接。",
+      "duration": "00:40",
+      "views": "1.2 万",
+      "date": "2023-08-07",
+      "thumbnail": "http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg"
+    },
+    {
+      "id": "BV1Uif8BjE1h",
+      "category": "xiaomi",
+      "title": "小米手环9Pro支持支付宝碰一碰支付",
+      "excerpt": "手环也能碰一碰付款了，体验小米手环9Pro的新功能。",
+      "duration": "00:27",
+      "views": "1.9 万",
+      "date": "2025-02-26",
+      "thumbnail": "http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg"
+    },
+    {
+      "id": "BV1LQWGzzEFR",
+      "category": "dji",
+      "title": "全网首发MINI4PRO无GPS三楼返航（炸机记录）",
+      "excerpt": "没有GPS信号的情况下尝试返航，结果令人意外。",
+      "duration": "01:53",
+      "views": "1.0 万",
+      "date": "2025-09-19",
+      "thumbnail": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
+    },
+    {
+      "id": "BV1ucuRzCEbh",
+      "category": "mc",
+      "title": "[教程]2分钟教你在树莓派开mc高版本服务器使用mcsm",
+      "excerpt": "用树莓派搭建 Minecraft 服务器，简单两步搞定。",
+      "duration": "02:15",
+      "views": "6,858",
+      "date": "2025-07-19",
+      "thumbnail": "http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg"
+    },
+    {
+      "id": "BV1MxedzkE9b",
+      "category": "dji",
+      "title": "rc2打开桌面教程",
+      "excerpt": "大疆遥控器 RC2 如何进入桌面系统，简单教程。",
+      "duration": "00:42",
+      "views": "2,937",
+      "date": "2025-08-25",
+      "thumbnail": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg"
+    },
+    {
+      "id": "BV1skHKzeEZ7",
+      "category": "dji",
+      "title": "DJI Pocket 3夜间画质表现",
+      "excerpt": "测试 Pocket 3 在夜间环境下的画质表现。",
+      "duration": "00:05",
+      "views": "654",
+      "date": "2025-10-03",
+      "thumbnail": "http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "cv36043724",
+      "type": "article",
+      "featured": true,
+      "badge": "热门教程",
+      "title": "树莓派开MC高版本服务器完整教程（附MCSM面板）",
+      "excerpt": "从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。包含下载软件、获取root权限、安装MCSM面板、配置Fabric服务器等完整步骤。",
+      "read_time": "5 分钟阅读",
+      "tags": ["Minecraft", "树莓派", "教程"],
+      "highlights": {
+        "views": "6,858",
+        "favorites": "315",
+        "likes": "190"
+      },
+      "thumbnail": "http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg",
+      "url": "https://www.bilibili.com/read/cv36043724"
+    },
+    {
+      "id": "BV1Rp4y137md",
+      "type": "video",
+      "featured": false,
+      "title": "创维电视安装第三方应用详细教程",
+      "excerpt": "省流版：附蓝奏云和百度云下载链接，轻松给创维电视安装第三方应用。",
+      "read_time": "3 分钟阅读",
+      "tags": ["电视", "创维", "教程"],
+      "thumbnail": "http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg",
+      "url": "https://www.bilibili.com/video/BV1Rp4y137md"
+    },
+    {
+      "id": "BV1MxedzkE9b",
+      "type": "video",
+      "featured": false,
+      "title": "大疆RC2遥控器打开桌面系统教程",
+      "excerpt": "大疆 RC2 遥控器如何进入桌面系统，解锁更多玩法。",
+      "read_time": "2 分钟阅读",
+      "tags": ["大疆", "遥控器", "教程"],
+      "thumbnail": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg",
+      "url": "https://www.bilibili.com/video/BV1MxedzkE9b"
+    }
+  ],
+  "recommendations": [
+    {
+      "rank": 1,
+      "category": "穿戴设备",
+      "title": "小米手环 9 Pro",
+      "reason": "支持支付宝碰一碰支付，性价比超高。",
+      "price": 299,
+      "score": "8.5/10",
+      "image": "https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=400&fit=crop",
+      "video_id": "BV1Uif8BjE1h"
+    },
+    {
+      "rank": 2,
+      "category": "开发板",
+      "title": "树莓派 5",
+      "reason": "开MC服务器、NAS、智能家居中枢，万能小盒子。",
+      "price": 599,
+      "score": "9.0/10",
+      "image": "https://images.unsplash.com/photo-1587573089734-599dca81d1c3?w=400&h=400&fit=crop",
+      "video_id": "BV1ucuRzCEbh"
+    },
+    {
+      "rank": 3,
+      "category": "相机",
+      "title": "DJI Pocket 3",
+      "reason": "口袋云台相机，夜拍表现出乎意料。",
+      "price": 2499,
+      "score": "8.8/10",
+      "image": "http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c",
+      "video_id": "BV1skHKzeEZ7"
+    },
+    {
+      "rank": 4,
+      "category": "电视",
+      "title": "创维电视（可刷机款）",
+      "reason": "能装第三方应用的智能电视，自由度拉满。",
+      "price": 4999,
+      "score": "7.5/10",
+      "image": "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&h=400&fit=crop",
+      "video_id": "BV1Rp4y137md"
+    },
+    {
+      "rank": 5,
+      "category": "无人机",
+      "title": "大疆 MINI 4 PRO",
+      "reason": "轻便小巧，画质够用，入门航拍首选。",
+      "price": 6388,
+      "score": "8.2/10",
+      "image": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c",
+      "video_id": "BV1LQWGzzEFR"
+    },
+    {
+      "rank": 6,
+      "category": "遥控器",
+      "title": "大疆 RC2 遥控器",
+      "reason": "自带屏幕，可刷桌面系统，解锁更多玩法。",
+      "price": 5999,
+      "score": "8.0/10",
+      "image": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c",
+      "video_id": "BV1MxedzkE9b"
+    }
+  ],
+  "about": {
+    "title": "一个鸽子的折腾日记",
+    "description": [
+      "我是 BCMOJANG，2024差点入选百大up。主要折腾大疆无人机、小米设备、树莓派、Minecraft 服务器，偶尔玩玩 AI 视频生成。",
+      "个性签名：一个鸽子。更新不稳定，但每条视频都是真实体验和折腾记录。"
+    ]
+  }
+}

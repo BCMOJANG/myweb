@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCMOJANG | 科技·无人机·折腾 - 一个鸽子的创作空间</title>
+    <meta name="description" content="BCMOJANG 的个人网站，大疆无人机、小米设备、Minecraft 教程、AI 视频生成。2024差点入选百大up。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <!-- Film Grain Overlay -->
+    <div class="film-grain" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">▶</span>
+                <span class="logo-text">BCMOJANG</span>
+            </a>
+            <div class="nav-links">
+                <a href="#videos" class="nav-link">视频库</a>
+                <a href="#reviews" class="nav-link">深度评测</a>
+                <a href="#recommendations" class="nav-link">购买指南</a>
+                <a href="#newsletter" class="nav-link">订阅</a>
+            </div>
+            <a href="https://space.bilibili.com/1248933612" class="nav-cta" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
+                </svg>
+                关注 B站
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#videos" class="mobile-link">视频库</a>
+        <a href="#reviews" class="mobile-link">深度评测</a>
+        <a href="#recommendations" class="mobile-link">购买指南</a>
+        <a href="#newsletter" class="mobile-link">订阅</a>
+        <a href="https://space.bilibili.com/1248933612" class="mobile-link cta" target="_blank">关注 B站频道</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">热门视频</div>
+            <h1 class="hero-title">
+                <span class="title-line">全网首发 MINI4PRO</span>
+                <span class="title-line accent">无GPS三楼返航炸机记录</span>
+            </h1>
+            <p class="hero-desc">大疆 MINI 4 PRO 在没有 GPS 信号的情况下尝试三楼返航，结果如何？全程实录，给飞友们提个醒。</p>
+            <div class="hero-meta">
+                <span class="meta-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    01:53
+                </span>
+                <span class="meta-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    1.0 万次观看
+                </span>
+                <span class="meta-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                    </svg>
+                    13 点赞
+                </span>
+            </div>
+            <div class="hero-actions">
+                <a href="https://www.bilibili.com/video/BV1LQWGzzEFR/" class="btn btn-primary" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    观看完整视频
+                </a>
+                <a href="#videos" class="btn btn-outline">浏览更多视频</a>
+            </div>
+        </div>
+        <div class="hero-thumbnail" id="heroThumbnail">
+            <div class="thumbnail-wrapper">
+                <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@960w_540h_1c" 
+                     alt="大疆 MINI 4 PRO 炸机记录" loading="eager">
+                <div class="thumbnail-play">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="white">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </div>
+                <div class="thumbnail-duration">01:53</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stats-inner">
+            <div class="stat">
+                <span class="stat-number" data-target="274">0</span>
+                <span class="stat-label">粉丝数</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="74">0</span>
+                <span class="stat-label">视频总数</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="1059000">0</span>
+                <span class="stat-label">总播放量</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="22302">0</span>
+                <span class="stat-label">累计获赞</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Library Section -->
+    <section class="section videos-section" id="videos" data-section-color="red">
+        <div class="section-header">
+            <div class="section-label">视频库</div>
+            <h2 class="section-title">全部视频</h2>
+            <p class="section-desc">大疆无人机、小米设备、Minecraft 教程、AI 视频生成，74 个视频记录我的折腾之路。</p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filters" id="videoFilters">
+            <button class="filter-btn active" data-category="all">全部</button>
+            <button class="filter-btn" data-category="dji">大疆</button>
+            <button class="filter-btn" data-category="xiaomi">小米</button>
+            <button class="filter-btn" data-category="mc">Minecraft</button>
+            <button class="filter-btn" data-category="ai">AI 生成</button>
+            <button class="filter-btn" data-category="tutorial">教程</button>
+            <button class="filter-btn" data-category="other">其他</button>
+        </div>
+
+        <!-- Video Grid -->
+        <div class="video-grid" id="videoGrid">
+            <!-- Video Card 1 - 置顶 -->
+            <article class="video-card" data-category="tutorial">
+                <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="card-thumbnail" target="_blank">
+                    <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@640w_360h_1c" 
+                         alt="创维电视安装第三方应用" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">00:40</div>
+                    <div class="card-views">1.2 万</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">教程</div>
+                    <h3 class="card-title">创维电视安装第三方应用</h3>
+                    <p class="card-excerpt">失败/省流请看置顶评论，附蓝奏云和百度云链接。</p>
+                    <div class="card-meta">
+                        <span>2023-08-07</span>
+                        <span>·</span>
+                        <span>1.2 万次观看</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Video Card 2 -->
+            <article class="video-card" data-category="xiaomi">
+                <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="card-thumbnail" target="_blank">
+                    <img src="http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg@640w_360h_1c" 
+                         alt="小米手环9Pro" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">00:27</div>
+                    <div class="card-views">1.9 万</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">小米</div>
+                    <h3 class="card-title">小米手环9Pro支持支付宝碰一碰支付</h3>
+                    <p class="card-excerpt">手环也能碰一碰付款了，体验小米手环9Pro的新功能。</p>
+                    <div class="card-meta">
+                        <span>2025-02-26</span>
+                        <span>·</span>
+                        <span>1.9 万次观看</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Video Card 3 -->
+            <article class="video-card" data-category="dji">
+                <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="card-thumbnail" target="_blank">
+                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@640w_360h_1c" 
+                         alt="MINI4PRO炸机记录" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">01:53</div>
+                    <div class="card-views">1.0 万</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">大疆</div>
+                    <h3 class="card-title">全网首发MINI4PRO无GPS三楼返航（炸机记录）</h3>
+                    <p class="card-excerpt">没有GPS信号的情况下尝试返航，结果令人意外。</p>
+                    <div class="card-meta">
+                        <span>2025-09-19</span>
+                        <span>·</span>
+                        <span>1.0 万次观看</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Video Card 4 -->
+            <article class="video-card" data-category="mc">
+                <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="card-thumbnail" target="_blank">
+                    <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@640w_360h_1c" 
+                         alt="树莓派开MC服务器" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">02:15</div>
+                    <div class="card-views">6,858</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">Minecraft</div>
+                    <h3 class="card-title">[教程]2分钟教你在树莓派开mc高版本服务器使用mcsm</h3>
+                    <p class="card-excerpt">用树莓派搭建 Minecraft 服务器，简单两步搞定。</p>
+                    <div class="card-meta">
+                        <span>2025-07-19</span>
+                        <span>·</span>
+                        <span>6,858 次观看</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Video Card 5 -->
+            <article class="video-card" data-category="dji">
+                <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="card-thumbnail" target="_blank">
+                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@640w_360h_1c" 
+                         alt="rc2打开桌面教程" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">00:42</div>
+                    <div class="card-views">2,937</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">大疆</div>
+                    <h3 class="card-title">rc2打开桌面教程</h3>
+                    <p class="card-excerpt">大疆遥控器 RC2 如何进入桌面系统，简单教程。</p>
+                    <div class="card-meta">
+                        <span>2025-08-25</span>
+                        <span>·</span>
+                        <span>2,937 次观看</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Video Card 6 -->
+            <article class="video-card" data-category="dji">
+                <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="card-thumbnail" target="_blank">
+                    <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@640w_360h_1c" 
+                         alt="DJI Pocket 3夜间画质" loading="lazy">
+                    <div class="card-play">▶</div>
+                    <div class="card-duration">00:05</div>
+                    <div class="card-views">654</div>
+                </a>
+                <div class="card-body">
+                    <div class="card-category">大疆</div>
+                    <h3 class="card-title">DJI Pocket 3夜间画质表现</h3>
+                    <p class="card-excerpt">测试 Pocket 3 在夜间环境下的画质表现。</p>
+                    <div class="card-meta">
+                        <span>2025-10-03</span>
+                        <span>·</span>
+                        <span>654 次观看</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="section-cta">
+            <a href="https://space.bilibili.com/1248933612/video" class="btn btn-outline" target="_blank">
+                查看全部 74 个视频
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Written Reviews Section -->
+    <section class="section reviews-section" id="reviews" data-section-color="blue">
+        <div class="section-header">
+            <div class="section-label">专栏文章</div>
+            <h2 class="section-title">图文详解</h2>
+            <p class="section-desc">B站专栏文章精选，比视频更详细的图文教程与评测。</p>
+        </div>
+
+        <!-- Sticky Video Player (shows when reading reviews) -->
+        <div class="sticky-video" id="stickyVideo">
+            <div class="sticky-video-inner">
+                <div class="sticky-player">
+                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@320w_180h_1c" alt="正在播放">
+                    <div class="sticky-play">▶</div>
+                </div>
+                <div class="sticky-info">
+                    <span class="sticky-title">MINI4PRO无GPS返航记录</span>
+                    <span class="sticky-status">正在播放</span>
+                </div>
+                <button class="sticky-close" id="stickyClose" aria-label="关闭">✕</button>
+            </div>
+        </div>
+
+        <!-- Reviews Grid -->
+        <div class="reviews-grid">
+            <!-- Review 1 -->
+            <article class="review-card featured">
+                <div class="review-thumbnail">
+                    <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@800w_450h_1c" 
+                         alt="树莓派MC服务器教程" loading="lazy">
+                    <div class="review-badge">热门教程</div>
+                    <div class="review-read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        5 分钟阅读
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-tags">
+                        <span class="tag">Minecraft</span>
+                        <span class="tag">树莓派</span>
+                        <span class="tag">教程</span>
+                    </div>
+                    <h3 class="review-title">树莓派开MC高版本服务器完整教程（附MCSM面板）</h3>
+                    <p class="review-excerpt">从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。包含下载软件、获取root权限、安装MCSM面板、配置Fabric服务器等完整步骤。</p>
+                    <div class="review-highlights">
+                        <div class="highlight">
+                            <span class="highlight-label">阅读量</span>
+                            <span class="highlight-value">6,858</span>
+                        </div>
+                        <div class="highlight">
+                            <span class="highlight-label">收藏</span>
+                            <span class="highlight-value">315</span>
+                        </div>
+                        <div class="highlight">
+                            <span class="highlight-label">点赞</span>
+                            <span class="highlight-value">190</span>
+                        </div>
+                    </div>
+                    <a href="https://www.bilibili.com/read/cv36043724" class="review-link" target="_blank">
+                        阅读完整教程
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Review 2 -->
+            <article class="review-card">
+                <div class="review-thumbnail">
+                    <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@800w_450h_1c" 
+                         alt="创维电视教程" loading="lazy">
+                    <div class="review-read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        3 分钟阅读
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-tags">
+                        <span class="tag">电视</span>
+                        <span class="tag">创维</span>
+                        <span class="tag">教程</span>
+                    </div>
+                    <h3 class="review-title">创维电视安装第三方应用详细教程</h3>
+                    <p class="review-excerpt">省流版：附蓝奏云和百度云下载链接，轻松给创维电视安装第三方应用。</p>
+                    <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="review-link" target="_blank">
+                        查看详细教程
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Review 3 -->
+            <article class="review-card">
+                <div class="review-thumbnail">
+                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@800w_450h_1c" 
+                         alt="大疆RC2教程" loading="lazy">
+                    <div class="review-read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        2 分钟阅读
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-tags">
+                        <span class="tag">大疆</span>
+                        <span class="tag">遥控器</span>
+                        <span class="tag">教程</span>
+                    </div>
+                    <h3 class="review-title">大疆RC2遥控器打开桌面系统教程</h3>
+                    <p class="review-excerpt">大疆 RC2 遥控器如何进入桌面系统，解锁更多玩法。</p>
+                    <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="review-link" target="_blank">
+                        查看详细教程
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section class="section recommendations-section" id="recommendations" data-section-color="yellow">
+        <div class="section-header">
+            <div class="section-label">折腾清单</div>
+            <h2 class="section-title">我的装备</h2>
+            <p class="section-desc">我正在使用的设备清单，从无人机到开发板，都是真金白银买的。</p>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="price-filter">
+            <div class="price-label">预算范围</div>
+            <div class="price-slider-container">
+                <input type="range" class="price-slider" id="priceSlider" 
+                       min="0" max="20000" value="5000" step="500">
+                <div class="price-range-labels">
+                    <span>¥0</span>
+                    <span>¥5,000</span>
+                    <span>¥10,000</span>
+                    <span>¥15,000</span>
+                    <span>¥20,000+</span>
+                </div>
+            </div>
+            <div class="price-display">
+                <span class="price-current" id="priceDisplay">¥5,000</span>
+                <span class="price-count" id="priceCount">3 款推荐</span>
+            </div>
+        </div>
+
+        <!-- Recommendations Grid -->
+        <div class="recommendations-grid" id="recommendationsGrid">
+            <!-- Recommendation 1 -->
+            <article class="rec-card" data-price="299">
+                <div class="rec-rank">#1</div>
+                <div class="rec-image">
+                    <img src="https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=400&fit=crop" 
+                         alt="小米手环9Pro" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">穿戴设备</div>
+                    <h3 class="rec-title">小米手环 9 Pro</h3>
+                    <p class="rec-reason">支持支付宝碰一碰支付，性价比超高。</p>
+                    <div class="rec-price">¥299</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">8.5/10</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Recommendation 2 -->
+            <article class="rec-card" data-price="599">
+                <div class="rec-rank">#2</div>
+                <div class="rec-image">
+                    <img src="https://images.unsplash.com/photo-1587573089734-599dca81d1c3?w=400&h=400&fit=crop" 
+                         alt="树莓派" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">开发板</div>
+                    <h3 class="rec-title">树莓派 5</h3>
+                    <p class="rec-reason">开MC服务器、NAS、智能家居中枢，万能小盒子。</p>
+                    <div class="rec-price">¥599</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">9.0/10</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Recommendation 3 -->
+            <article class="rec-card" data-price="2499">
+                <div class="rec-rank">#3</div>
+                <div class="rec-image">
+                    <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c" 
+                         alt="DJI Pocket 3" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">相机</div>
+                    <h3 class="rec-title">DJI Pocket 3</h3>
+                    <p class="rec-reason">口袋云台相机，夜拍表现出乎意料。</p>
+                    <div class="rec-price">¥2,499</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">8.8/10</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Recommendation 4 -->
+            <article class="rec-card" data-price="4999">
+                <div class="rec-rank">#4</div>
+                <div class="rec-image">
+                    <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&h=400&fit=crop" 
+                         alt="创维电视" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">电视</div>
+                    <h3 class="rec-title">创维电视（可刷机款）</h3>
+                    <p class="rec-reason">能装第三方应用的智能电视，自由度拉满。</p>
+                    <div class="rec-price">¥4,999</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">7.5/10</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Recommendation 5 -->
+            <article class="rec-card" data-price="6388">
+                <div class="rec-rank">#5</div>
+                <div class="rec-image">
+                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c" 
+                         alt="大疆 MINI 4 PRO" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">无人机</div>
+                    <h3 class="rec-title">大疆 MINI 4 PRO</h3>
+                    <p class="rec-reason">轻便小巧，画质够用，入门航拍首选。</p>
+                    <div class="rec-price">¥6,388</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">8.2/10</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Recommendation 6 -->
+            <article class="rec-card" data-price="5999">
+                <div class="rec-rank">#6</div>
+                <div class="rec-image">
+                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c" 
+                         alt="大疆 RC2 遥控器" loading="lazy">
+                </div>
+                <div class="rec-body">
+                    <div class="rec-category">遥控器</div>
+                    <h3 class="rec-title">大疆 RC2 遥控器</h3>
+                    <p class="rec-reason">自带屏幕，可刷桌面系统，解锁更多玩法。</p>
+                    <div class="rec-price">¥5,999</div>
+                    <div class="rec-verdict">
+                        <span class="verdict-label">推荐指数</span>
+                        <span class="verdict-score">8.0/10</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Newsletter & Patreon Section -->
+    <section class="section newsletter-section" id="newsletter" data-section-color="white">
+        <div class="newsletter-grid">
+            <!-- Newsletter -->
+            <div class="newsletter-card">
+                <div class="newsletter-icon">📬</div>
+                <h3 class="newsletter-title">关注动态</h3>
+                <p class="newsletter-desc">在B站关注我，第一时间获取新视频通知。也可以加QQ群 3630615032 交流。</p>
+                <div class="newsletter-trust" style="margin-top: 20px;">
+                    <a href="https://space.bilibili.com/1248933612" class="btn btn-primary" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
+                        </svg>
+                        关注 B站
+                    </a>
+                </div>
+                <div class="newsletter-trust" style="margin-top: 16px;">
+                    <span>已有 274 位粉丝</span>
+                    <span>·</span>
+                    <span>累计 105.9 万播放</span>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="patreon-card">
+                <div class="patreon-icon">💬</div>
+                <h3 class="patreon-title">联系我</h3>
+                <p class="patreon-desc">有问题想问？想合作？可以通过以下方式联系我。</p>
+                <div class="patreon-tiers">
+                    <div class="tier">
+                        <div class="tier-name">QQ 群</div>
+                        <div class="tier-price">3630615032</div>
+                        <div class="tier-perks">技术交流</div>
+                    </div>
+                    <div class="tier featured">
+                        <div class="tier-badge">推荐</div>
+                        <div class="tier-name">B站私信</div>
+                        <div class="tier-price">随时在线</div>
+                        <div class="tier-perks">问题反馈</div>
+                    </div>
+                    <div class="tier">
+                        <div class="tier-name">GitHub</div>
+                        <div class="tier-price">@BCMOJANG</div>
+                        <div class="tier-perks">开源项目</div>
+                    </div>
+                </div>
+                <a href="https://space.bilibili.com/1248933612" class="btn btn-patreon" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
+                    </svg>
+                    去 B站 看看
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section" id="about">
+        <div class="about-grid">
+            <div class="about-image">
+                <img src="https://i0.hdslb.com/bfs/face/9e3222c3c98239e715a27c515c354a638f3bc59d.jpg@600w_600h_1c" 
+                     alt="BCMOJANG" loading="lazy">
+                <div class="about-badge">
+                    <span class="badge-years">Lv.5</span>
+                    <span class="badge-text">大会员</span>
+                </div>
+            </div>
+            <div class="about-content">
+                <div class="section-label">关于我</div>
+                <h2 class="about-title">一个鸽子的折腾日记</h2>
+                <p class="about-text">我是 BCMOJANG，2024差点入选百大up。主要折腾大疆无人机、小米设备、树莓派、Minecraft 服务器，偶尔玩玩 AI 视频生成。</p>
+                <p class="about-text">个性签名：一个鸽子。更新不稳定，但每条视频都是真实体验和折腾记录。</p>
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <span class="about-stat-num">74</span>
+                        <span class="about-stat-label">视频</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num">274</span>
+                        <span class="about-stat-label">粉丝</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num">105.9万</span>
+                        <span class="about-stat-label">播放</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num">2.2万</span>
+                        <span class="about-stat-label">获赞</span>
+                    </div>
+                </div>
+                <div class="about-social">
+                    <a href="https://space.bilibili.com/1248933612" class="social-link" target="_blank" aria-label="Bilibili">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="logo-icon">▶</span>
+                <span class="logo-text">BCMOJANG</span>
+                <p class="footer-tagline">一个鸽子的折腾日记</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>内容</h4>
+                    <a href="#videos">视频库</a>
+                    <a href="#reviews">专栏文章</a>
+                    <a href="#recommendations">装备清单</a>
+                </div>
+                <div class="footer-col">
+                    <h4>关注</h4>
+                    <a href="https://space.bilibili.com/1248933612" target="_blank">B站主页</a>
+                    <a href="https://space.bilibili.com/1248933612/dynamic" target="_blank">动态</a>
+                    <a href="https://space.bilibili.com/1248933612/video" target="_blank">全部视频</a>
+                </div>
+                <div class="footer-col">
+                    <h4>联系</h4>
+                    <a href="https://space.bilibili.com/1248933612" target="_blank">B站私信</a>
+                    <a>QQ群: 3630615032</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 BCMOJANG. 保留所有权利.</p>
+            <p>B站 UID: 1248933612</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+        </svg>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

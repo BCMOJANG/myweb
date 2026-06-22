@@ -1646,3 +1646,29 @@ body {
     background: var(--red);
     color: var(--white);
 }
+
+/* ===== Image Fallback ===== */
+img {
+    background: var(--gray);
+    object-fit: cover;
+}
+
+.card-thumbnail img,
+.review-thumbnail img,
+.rec-image img,
+.thumbnail-wrapper img {
+    background: linear-gradient(135deg, var(--dark-gray) 0%, var(--gray) 100%);
+}
+
+/* Hide broken image icon */
+img[alt]::after {
+    content: attr(alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background: var(--gray);
+    color: var(--off-white);
+    font-size: 0.8rem;
+}

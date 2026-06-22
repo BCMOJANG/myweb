@@ -16,6 +16,20 @@ async function loadData() {
     }
 }
 
+// Hide page loader
+function hideLoader() {
+    const loader = document.querySelector('.page-loader');
+    if (loader) {
+        setTimeout(() => {
+            loader.classList.add('loaded');
+        }, 500);
+        // Fallback: force hide after 2 seconds
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 2000);
+    }
+}
+
 // Format number with Chinese units
 function formatNumber(num) {
     if (num >= 10000) {
@@ -269,6 +283,10 @@ function renderContent() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+    // Hide loader immediately
+    hideLoader();
+    
+    // Load data and render
     await loadData();
     renderContent();
     

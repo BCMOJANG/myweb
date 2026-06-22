@@ -26,7 +26,7 @@
     "likes": "13",
     "date": "2025-09-19",
     "video_url": "https://www.bilibili.com/video/BV1LQWGzzEFR/",
-    "thumbnail": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
   },
   "categories": [
     { "id": "all", "name": "全部" },
@@ -45,7 +45,7 @@
       "duration": "00:40",
       "views": "1.2 万",
       "date": "2023-08-07",
-      "thumbnail": "http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg"
+      "thumbnail": "https://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg"
     },
     {
       "id": "BV1Uif8BjE1h",
@@ -55,7 +55,7 @@
       "duration": "00:27",
       "views": "1.9 万",
       "date": "2025-02-26",
-      "thumbnail": "http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg"
+      "thumbnail": "https://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg"
     },
     {
       "id": "BV1LQWGzzEFR",
@@ -65,7 +65,7 @@
       "duration": "01:53",
       "views": "1.0 万",
       "date": "2025-09-19",
-      "thumbnail": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
+      "thumbnail": "https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg"
     },
     {
       "id": "BV1ucuRzCEbh",
@@ -75,7 +75,7 @@
       "duration": "02:15",
       "views": "6,858",
       "date": "2025-07-19",
-      "thumbnail": "http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg"
+      "thumbnail": "https://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg"
     },
     {
       "id": "BV1MxedzkE9b",
@@ -85,7 +85,7 @@
       "duration": "00:42",
       "views": "2,937",
       "date": "2025-08-25",
-      "thumbnail": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg"
+      "thumbnail": "https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg"
     },
     {
       "id": "BV1skHKzeEZ7",
@@ -95,7 +95,7 @@
       "duration": "00:05",
       "views": "654",
       "date": "2025-10-03",
-      "thumbnail": "http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg"
+      "thumbnail": "https://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg"
     }
   ],
   "reviews": [
@@ -113,7 +113,7 @@
         "favorites": "315",
         "likes": "190"
       },
-      "thumbnail": "http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg",
+      "thumbnail": "https://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg",
       "url": "https://www.bilibili.com/read/cv36043724"
     },
     {
@@ -124,7 +124,7 @@
       "excerpt": "省流版：附蓝奏云和百度云下载链接，轻松给创维电视安装第三方应用。",
       "read_time": "3 分钟阅读",
       "tags": ["电视", "创维", "教程"],
-      "thumbnail": "http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg",
+      "thumbnail": "https://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg",
       "url": "https://www.bilibili.com/video/BV1Rp4y137md"
     },
     {
@@ -135,7 +135,7 @@
       "excerpt": "大疆 RC2 遥控器如何进入桌面系统，解锁更多玩法。",
       "read_time": "2 分钟阅读",
       "tags": ["大疆", "遥控器", "教程"],
-      "thumbnail": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg",
+      "thumbnail": "https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg",
       "url": "https://www.bilibili.com/video/BV1MxedzkE9b"
     }
   ],
@@ -167,7 +167,7 @@
       "reason": "口袋云台相机，夜拍表现出乎意料。",
       "price": 2499,
       "score": "8.8/10",
-      "image": "http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c",
+      "image": "https://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c",
       "video_id": "BV1skHKzeEZ7"
     },
     {
@@ -187,7 +187,7 @@
       "reason": "轻便小巧，画质够用，入门航拍首选。",
       "price": 6388,
       "score": "8.2/10",
-      "image": "http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c",
+      "image": "https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c",
       "video_id": "BV1LQWGzzEFR"
     },
     {
@@ -197,7 +197,7 @@
       "reason": "自带屏幕，可刷桌面系统，解锁更多玩法。",
       "price": 5999,
       "score": "8.0/10",
-      "image": "http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c",
+      "image": "https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c",
       "video_id": "BV1MxedzkE9b"
     }
   ],

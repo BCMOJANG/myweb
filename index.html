@@ -12,6 +12,18 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
 </head>
 <body>
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="loader-text">BCMOJANG</div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
     <!-- Film Grain Overlay -->
     <div class="film-grain" aria-hidden="true"></div>
 
@@ -53,6 +65,7 @@
     <section class="hero" id="hero">
         <div class="hero-bg">
             <div class="hero-gradient"></div>
+            <div class="hero-grid"></div>
         </div>
         <div class="hero-content">
             <div class="hero-badge">热门视频</div>
@@ -108,22 +121,22 @@
     <!-- Stats Bar -->
     <section class="stats-bar">
         <div class="stats-inner">
-            <div class="stat">
+            <a href="https://space.bilibili.com/1248933612/relation/fans" class="stat" target="_blank">
                 <span class="stat-number" data-target="274">0</span>
                 <span class="stat-label">粉丝数</span>
-            </div>
-            <div class="stat">
+            </a>
+            <a href="https://space.bilibili.com/1248933612/video" class="stat" target="_blank">
                 <span class="stat-number" data-target="74">0</span>
                 <span class="stat-label">视频总数</span>
-            </div>
-            <div class="stat">
+            </a>
+            <a href="https://space.bilibili.com/1248933612" class="stat" target="_blank">
                 <span class="stat-number" data-target="1059000">0</span>
                 <span class="stat-label">总播放量</span>
-            </div>
-            <div class="stat">
+            </a>
+            <a href="https://space.bilibili.com/1248933612" class="stat" target="_blank">
                 <span class="stat-number" data-target="22302">0</span>
                 <span class="stat-label">累计获赞</span>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -150,128 +163,140 @@
         <div class="video-grid" id="videoGrid">
             <!-- Video Card 1 - 置顶 -->
             <article class="video-card" data-category="tutorial">
-                <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="card-thumbnail" target="_blank">
-                    <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@640w_360h_1c" 
-                         alt="创维电视安装第三方应用" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">00:40</div>
-                    <div class="card-views">1.2 万</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">教程</div>
-                    <h3 class="card-title">创维电视安装第三方应用</h3>
-                    <p class="card-excerpt">失败/省流请看置顶评论，附蓝奏云和百度云链接。</p>
-                    <div class="card-meta">
-                        <span>2023-08-07</span>
-                        <span>·</span>
-                        <span>1.2 万次观看</span>
+                <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@640w_360h_1c" 
+                             alt="创维电视安装第三方应用" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">00:40</div>
+                        <div class="card-views">1.2 万</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">教程</div>
+                        <h3 class="card-title">创维电视安装第三方应用</h3>
+                        <p class="card-excerpt">失败/省流请看置顶评论，附蓝奏云和百度云链接。</p>
+                        <div class="card-meta">
+                            <span>2023-08-07</span>
+                            <span>·</span>
+                            <span>1.2 万次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
 
             <!-- Video Card 2 -->
             <article class="video-card" data-category="xiaomi">
-                <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="card-thumbnail" target="_blank">
-                    <img src="http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg@640w_360h_1c" 
-                         alt="小米手环9Pro" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">00:27</div>
-                    <div class="card-views">1.9 万</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">小米</div>
-                    <h3 class="card-title">小米手环9Pro支持支付宝碰一碰支付</h3>
-                    <p class="card-excerpt">手环也能碰一碰付款了，体验小米手环9Pro的新功能。</p>
-                    <div class="card-meta">
-                        <span>2025-02-26</span>
-                        <span>·</span>
-                        <span>1.9 万次观看</span>
+                <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg@640w_360h_1c" 
+                             alt="小米手环9Pro" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">00:27</div>
+                        <div class="card-views">1.9 万</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">小米</div>
+                        <h3 class="card-title">小米手环9Pro支持支付宝碰一碰支付</h3>
+                        <p class="card-excerpt">手环也能碰一碰付款了，体验小米手环9Pro的新功能。</p>
+                        <div class="card-meta">
+                            <span>2025-02-26</span>
+                            <span>·</span>
+                            <span>1.9 万次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
 
             <!-- Video Card 3 -->
             <article class="video-card" data-category="dji">
-                <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="card-thumbnail" target="_blank">
-                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@640w_360h_1c" 
-                         alt="MINI4PRO炸机记录" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">01:53</div>
-                    <div class="card-views">1.0 万</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">大疆</div>
-                    <h3 class="card-title">全网首发MINI4PRO无GPS三楼返航（炸机记录）</h3>
-                    <p class="card-excerpt">没有GPS信号的情况下尝试返航，结果令人意外。</p>
-                    <div class="card-meta">
-                        <span>2025-09-19</span>
-                        <span>·</span>
-                        <span>1.0 万次观看</span>
+                <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@640w_360h_1c" 
+                             alt="MINI4PRO炸机记录" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">01:53</div>
+                        <div class="card-views">1.0 万</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">大疆</div>
+                        <h3 class="card-title">全网首发MINI4PRO无GPS三楼返航（炸机记录）</h3>
+                        <p class="card-excerpt">没有GPS信号的情况下尝试返航，结果令人意外。</p>
+                        <div class="card-meta">
+                            <span>2025-09-19</span>
+                            <span>·</span>
+                            <span>1.0 万次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
 
             <!-- Video Card 4 -->
             <article class="video-card" data-category="mc">
-                <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="card-thumbnail" target="_blank">
-                    <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@640w_360h_1c" 
-                         alt="树莓派开MC服务器" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">02:15</div>
-                    <div class="card-views">6,858</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">Minecraft</div>
-                    <h3 class="card-title">[教程]2分钟教你在树莓派开mc高版本服务器使用mcsm</h3>
-                    <p class="card-excerpt">用树莓派搭建 Minecraft 服务器，简单两步搞定。</p>
-                    <div class="card-meta">
-                        <span>2025-07-19</span>
-                        <span>·</span>
-                        <span>6,858 次观看</span>
+                <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@640w_360h_1c" 
+                             alt="树莓派开MC服务器" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">02:15</div>
+                        <div class="card-views">6,858</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">Minecraft</div>
+                        <h3 class="card-title">[教程]2分钟教你在树莓派开mc高版本服务器使用mcsm</h3>
+                        <p class="card-excerpt">用树莓派搭建 Minecraft 服务器，简单两步搞定。</p>
+                        <div class="card-meta">
+                            <span>2025-07-19</span>
+                            <span>·</span>
+                            <span>6,858 次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
 
             <!-- Video Card 5 -->
             <article class="video-card" data-category="dji">
-                <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="card-thumbnail" target="_blank">
-                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@640w_360h_1c" 
-                         alt="rc2打开桌面教程" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">00:42</div>
-                    <div class="card-views">2,937</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">大疆</div>
-                    <h3 class="card-title">rc2打开桌面教程</h3>
-                    <p class="card-excerpt">大疆遥控器 RC2 如何进入桌面系统，简单教程。</p>
-                    <div class="card-meta">
-                        <span>2025-08-25</span>
-                        <span>·</span>
-                        <span>2,937 次观看</span>
+                <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@640w_360h_1c" 
+                             alt="rc2打开桌面教程" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">00:42</div>
+                        <div class="card-views">2,937</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">大疆</div>
+                        <h3 class="card-title">rc2打开桌面教程</h3>
+                        <p class="card-excerpt">大疆遥控器 RC2 如何进入桌面系统，简单教程。</p>
+                        <div class="card-meta">
+                            <span>2025-08-25</span>
+                            <span>·</span>
+                            <span>2,937 次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
 
             <!-- Video Card 6 -->
             <article class="video-card" data-category="dji">
-                <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="card-thumbnail" target="_blank">
-                    <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@640w_360h_1c" 
-                         alt="DJI Pocket 3夜间画质" loading="lazy">
-                    <div class="card-play">▶</div>
-                    <div class="card-duration">00:05</div>
-                    <div class="card-views">654</div>
-                </a>
-                <div class="card-body">
-                    <div class="card-category">大疆</div>
-                    <h3 class="card-title">DJI Pocket 3夜间画质表现</h3>
-                    <p class="card-excerpt">测试 Pocket 3 在夜间环境下的画质表现。</p>
-                    <div class="card-meta">
-                        <span>2025-10-03</span>
-                        <span>·</span>
-                        <span>654 次观看</span>
+                <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="card-link" target="_blank">
+                    <div class="card-thumbnail">
+                        <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@640w_360h_1c" 
+                             alt="DJI Pocket 3夜间画质" loading="lazy">
+                        <div class="card-play">▶</div>
+                        <div class="card-duration">00:05</div>
+                        <div class="card-views">654</div>
                     </div>
-                </div>
+                    <div class="card-body">
+                        <div class="card-category">大疆</div>
+                        <h3 class="card-title">DJI Pocket 3夜间画质表现</h3>
+                        <p class="card-excerpt">测试 Pocket 3 在夜间环境下的画质表现。</p>
+                        <div class="card-meta">
+                            <span>2025-10-03</span>
+                            <span>·</span>
+                            <span>654 次观看</span>
+                        </div>
+                    </div>
+                </a>
             </article>
         </div>
 
@@ -312,104 +337,110 @@
         <div class="reviews-grid">
             <!-- Review 1 -->
             <article class="review-card featured">
-                <div class="review-thumbnail">
-                    <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@800w_450h_1c" 
-                         alt="树莓派MC服务器教程" loading="lazy">
-                    <div class="review-badge">热门教程</div>
-                    <div class="review-read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                        </svg>
-                        5 分钟阅读
-                    </div>
-                </div>
-                <div class="review-body">
-                    <div class="review-tags">
-                        <span class="tag">Minecraft</span>
-                        <span class="tag">树莓派</span>
-                        <span class="tag">教程</span>
-                    </div>
-                    <h3 class="review-title">树莓派开MC高版本服务器完整教程（附MCSM面板）</h3>
-                    <p class="review-excerpt">从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。包含下载软件、获取root权限、安装MCSM面板、配置Fabric服务器等完整步骤。</p>
-                    <div class="review-highlights">
-                        <div class="highlight">
-                            <span class="highlight-label">阅读量</span>
-                            <span class="highlight-value">6,858</span>
-                        </div>
-                        <div class="highlight">
-                            <span class="highlight-label">收藏</span>
-                            <span class="highlight-value">315</span>
-                        </div>
-                        <div class="highlight">
-                            <span class="highlight-label">点赞</span>
-                            <span class="highlight-value">190</span>
+                <a href="https://www.bilibili.com/read/cv36043724" class="review-link-wrapper" target="_blank">
+                    <div class="review-thumbnail">
+                        <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@800w_450h_1c" 
+                             alt="树莓派MC服务器教程" loading="lazy">
+                        <div class="review-badge">热门教程</div>
+                        <div class="review-read-time">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            5 分钟阅读
                         </div>
                     </div>
-                    <a href="https://www.bilibili.com/read/cv36043724" class="review-link" target="_blank">
-                        阅读完整教程
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                        </svg>
-                    </a>
-                </div>
+                    <div class="review-body">
+                        <div class="review-tags">
+                            <span class="tag">Minecraft</span>
+                            <span class="tag">树莓派</span>
+                            <span class="tag">教程</span>
+                        </div>
+                        <h3 class="review-title">树莓派开MC高版本服务器完整教程（附MCSM面板）</h3>
+                        <p class="review-excerpt">从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。包含下载软件、获取root权限、安装MCSM面板、配置Fabric服务器等完整步骤。</p>
+                        <div class="review-highlights">
+                            <div class="highlight">
+                                <span class="highlight-label">阅读量</span>
+                                <span class="highlight-value">6,858</span>
+                            </div>
+                            <div class="highlight">
+                                <span class="highlight-label">收藏</span>
+                                <span class="highlight-value">315</span>
+                            </div>
+                            <div class="highlight">
+                                <span class="highlight-label">点赞</span>
+                                <span class="highlight-value">190</span>
+                            </div>
+                        </div>
+                        <span class="review-link">
+                            阅读完整教程
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                </a>
             </article>
 
             <!-- Review 2 -->
             <article class="review-card">
-                <div class="review-thumbnail">
-                    <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@800w_450h_1c" 
-                         alt="创维电视教程" loading="lazy">
-                    <div class="review-read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                        </svg>
-                        3 分钟阅读
+                <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="review-link-wrapper" target="_blank">
+                    <div class="review-thumbnail">
+                        <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@800w_450h_1c" 
+                             alt="创维电视教程" loading="lazy">
+                        <div class="review-read-time">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            3 分钟阅读
+                        </div>
                     </div>
-                </div>
-                <div class="review-body">
-                    <div class="review-tags">
-                        <span class="tag">电视</span>
-                        <span class="tag">创维</span>
-                        <span class="tag">教程</span>
+                    <div class="review-body">
+                        <div class="review-tags">
+                            <span class="tag">电视</span>
+                            <span class="tag">创维</span>
+                            <span class="tag">教程</span>
+                        </div>
+                        <h3 class="review-title">创维电视安装第三方应用详细教程</h3>
+                        <p class="review-excerpt">省流版：附蓝奏云和百度云下载链接，轻松给创维电视安装第三方应用。</p>
+                        <span class="review-link">
+                            查看详细教程
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
                     </div>
-                    <h3 class="review-title">创维电视安装第三方应用详细教程</h3>
-                    <p class="review-excerpt">省流版：附蓝奏云和百度云下载链接，轻松给创维电视安装第三方应用。</p>
-                    <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="review-link" target="_blank">
-                        查看详细教程
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                        </svg>
-                    </a>
-                </div>
+                </a>
             </article>
 
             <!-- Review 3 -->
             <article class="review-card">
-                <div class="review-thumbnail">
-                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@800w_450h_1c" 
-                         alt="大疆RC2教程" loading="lazy">
-                    <div class="review-read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                        </svg>
-                        2 分钟阅读
+                <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="review-link-wrapper" target="_blank">
+                    <div class="review-thumbnail">
+                        <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@800w_450h_1c" 
+                             alt="大疆RC2教程" loading="lazy">
+                        <div class="review-read-time">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            2 分钟阅读
+                        </div>
                     </div>
-                </div>
-                <div class="review-body">
-                    <div class="review-tags">
-                        <span class="tag">大疆</span>
-                        <span class="tag">遥控器</span>
-                        <span class="tag">教程</span>
+                    <div class="review-body">
+                        <div class="review-tags">
+                            <span class="tag">大疆</span>
+                            <span class="tag">遥控器</span>
+                            <span class="tag">教程</span>
+                        </div>
+                        <h3 class="review-title">大疆RC2遥控器打开桌面系统教程</h3>
+                        <p class="review-excerpt">大疆 RC2 遥控器如何进入桌面系统，解锁更多玩法。</p>
+                        <span class="review-link">
+                            查看详细教程
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
                     </div>
-                    <h3 class="review-title">大疆RC2遥控器打开桌面系统教程</h3>
-                    <p class="review-excerpt">大疆 RC2 遥控器如何进入桌面系统，解锁更多玩法。</p>
-                    <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="review-link" target="_blank">
-                        查看详细教程
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                        </svg>
-                    </a>
-                </div>
+                </a>
             </article>
         </div>
     </section>
@@ -445,7 +476,7 @@
         <!-- Recommendations Grid -->
         <div class="recommendations-grid" id="recommendationsGrid">
             <!-- Recommendation 1 -->
-            <article class="rec-card" data-price="299">
+            <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="rec-card" data-price="299" target="_blank">
                 <div class="rec-rank">#1</div>
                 <div class="rec-image">
                     <img src="https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=400&fit=crop" 
@@ -461,10 +492,10 @@
                         <span class="verdict-score">8.5/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Recommendation 2 -->
-            <article class="rec-card" data-price="599">
+            <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="rec-card" data-price="599" target="_blank">
                 <div class="rec-rank">#2</div>
                 <div class="rec-image">
                     <img src="https://images.unsplash.com/photo-1587573089734-599dca81d1c3?w=400&h=400&fit=crop" 
@@ -480,10 +511,10 @@
                         <span class="verdict-score">9.0/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Recommendation 3 -->
-            <article class="rec-card" data-price="2499">
+            <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="rec-card" data-price="2499" target="_blank">
                 <div class="rec-rank">#3</div>
                 <div class="rec-image">
                     <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c" 
@@ -499,10 +530,10 @@
                         <span class="verdict-score">8.8/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Recommendation 4 -->
-            <article class="rec-card" data-price="4999">
+            <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="rec-card" data-price="4999" target="_blank">
                 <div class="rec-rank">#4</div>
                 <div class="rec-image">
                     <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&h=400&fit=crop" 
@@ -518,10 +549,10 @@
                         <span class="verdict-score">7.5/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Recommendation 5 -->
-            <article class="rec-card" data-price="6388">
+            <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="rec-card" data-price="6388" target="_blank">
                 <div class="rec-rank">#5</div>
                 <div class="rec-image">
                     <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c" 
@@ -537,10 +568,10 @@
                         <span class="verdict-score">8.2/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Recommendation 6 -->
-            <article class="rec-card" data-price="5999">
+            <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="rec-card" data-price="5999" target="_blank">
                 <div class="rec-rank">#6</div>
                 <div class="rec-image">
                     <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c" 
@@ -556,19 +587,19 @@
                         <span class="verdict-score">8.0/10</span>
                     </div>
                 </div>
-            </article>
+            </a>
         </div>
     </section>
 
-    <!-- Newsletter & Patreon Section -->
-    <section class="section newsletter-section" id="newsletter" data-section-color="white">
-        <div class="newsletter-grid">
+    <!-- Contact Section -->
+    <section class="section contact-section" id="newsletter" data-section-color="white">
+        <div class="contact-grid">
             <!-- Newsletter -->
-            <div class="newsletter-card">
-                <div class="newsletter-icon">📬</div>
-                <h3 class="newsletter-title">关注动态</h3>
-                <p class="newsletter-desc">在B站关注我，第一时间获取新视频通知。也可以加QQ群 3630615032 交流。</p>
-                <div class="newsletter-trust" style="margin-top: 20px;">
+            <div class="contact-card">
+                <div class="contact-icon">📬</div>
+                <h3 class="contact-title">关注动态</h3>
+                <p class="contact-desc">在B站关注我，第一时间获取新视频通知。也可以加QQ群 3630615032 交流。</p>
+                <div class="contact-trust" style="margin-top: 20px;">
                     <a href="https://space.bilibili.com/1248933612" class="btn btn-primary" target="_blank">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
@@ -576,7 +607,7 @@
                         关注 B站
                     </a>
                 </div>
-                <div class="newsletter-trust" style="margin-top: 16px;">
+                <div class="contact-trust" style="margin-top: 16px;">
                     <span>已有 274 位粉丝</span>
                     <span>·</span>
                     <span>累计 105.9 万播放</span>
@@ -584,27 +615,27 @@
             </div>
 
             <!-- Contact -->
-            <div class="patreon-card">
-                <div class="patreon-icon">💬</div>
-                <h3 class="patreon-title">联系我</h3>
-                <p class="patreon-desc">有问题想问？想合作？可以通过以下方式联系我。</p>
-                <div class="patreon-tiers">
-                    <div class="tier">
+            <div class="contact-card">
+                <div class="contact-icon">💬</div>
+                <h3 class="contact-title">联系我</h3>
+                <p class="contact-desc">有问题想问？想合作？可以通过以下方式联系我。</p>
+                <div class="contact-tiers">
+                    <a href="https://qm.qq.com/q/3630615032" class="tier" target="_blank">
                         <div class="tier-name">QQ 群</div>
                         <div class="tier-price">3630615032</div>
                         <div class="tier-perks">技术交流</div>
-                    </div>
-                    <div class="tier featured">
+                    </a>
+                    <a href="https://space.bilibili.com/1248933612" class="tier featured" target="_blank">
                         <div class="tier-badge">推荐</div>
                         <div class="tier-name">B站私信</div>
                         <div class="tier-price">随时在线</div>
                         <div class="tier-perks">问题反馈</div>
-                    </div>
-                    <div class="tier">
+                    </a>
+                    <a href="https://github.com/BCMOJANG" class="tier" target="_blank">
                         <div class="tier-name">GitHub</div>
                         <div class="tier-price">@BCMOJANG</div>
                         <div class="tier-perks">开源项目</div>
-                    </div>
+                    </a>
                 </div>
                 <a href="https://space.bilibili.com/1248933612" class="btn btn-patreon" target="_blank">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

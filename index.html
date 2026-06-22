@@ -10,19 +10,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+    <style>
+        /* Inline critical CSS for loader */
+        .page-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+        }
+        .page-loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-text {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <!-- Page Loader -->
-    <div class="page-loader">
+    <div class="page-loader" id="pageLoader">
         <div class="loader-text">BCMOJANG</div>
     </div>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
 
     <!-- Film Grain Overlay -->
     <div class="film-grain" aria-hidden="true"></div>
@@ -38,7 +57,7 @@
                 <a href="#videos" class="nav-link">视频库</a>
                 <a href="#reviews" class="nav-link">深度评测</a>
                 <a href="#recommendations" class="nav-link">购买指南</a>
-                <a href="#newsletter" class="nav-link">订阅</a>
+                <a href="#contact" class="nav-link">联系</a>
             </div>
             <a href="https://space.bilibili.com/1248933612" class="nav-cta" target="_blank" rel="noopener">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -57,7 +76,7 @@
         <a href="#videos" class="mobile-link">视频库</a>
         <a href="#reviews" class="mobile-link">深度评测</a>
         <a href="#recommendations" class="mobile-link">购买指南</a>
-        <a href="#newsletter" class="mobile-link">订阅</a>
+        <a href="#contact" class="mobile-link">联系</a>
         <a href="https://space.bilibili.com/1248933612" class="mobile-link cta" target="_blank">关注 B站频道</a>
     </div>
 
@@ -105,8 +124,8 @@
             </div>
         </div>
         <div class="hero-thumbnail" id="heroThumbnail">
-            <div class="thumbnail-wrapper">
-                <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@960w_540h_1c" 
+            <a href="https://www.bilibili.com/video/BV1LQWGzzEFR/" target="_blank" class="thumbnail-wrapper">
+                <img src="https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@960w_540h_1c" 
                      alt="大疆 MINI 4 PRO 炸机记录" loading="eager">
                 <div class="thumbnail-play">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="white">
@@ -114,7 +133,7 @@
                     </svg>
                 </div>
                 <div class="thumbnail-duration">01:53</div>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -154,18 +173,16 @@
             <button class="filter-btn" data-category="dji">大疆</button>
             <button class="filter-btn" data-category="xiaomi">小米</button>
             <button class="filter-btn" data-category="mc">Minecraft</button>
-            <button class="filter-btn" data-category="ai">AI 生成</button>
             <button class="filter-btn" data-category="tutorial">教程</button>
             <button class="filter-btn" data-category="other">其他</button>
         </div>
 
         <!-- Video Grid -->
         <div class="video-grid" id="videoGrid">
-            <!-- Video Card 1 - 置顶 -->
             <article class="video-card" data-category="tutorial">
                 <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@640w_360h_1c" 
+                        <img src="https://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@640w_360h_1c" 
                              alt="创维电视安装第三方应用" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">00:40</div>
@@ -184,11 +201,10 @@
                 </a>
             </article>
 
-            <!-- Video Card 2 -->
             <article class="video-card" data-category="xiaomi">
                 <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg@640w_360h_1c" 
+                        <img src="https://i1.hdslb.com/bfs/archive/364976075e4673410cba4883214c0537447200e1.jpg@640w_360h_1c" 
                              alt="小米手环9Pro" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">00:27</div>
@@ -207,11 +223,10 @@
                 </a>
             </article>
 
-            <!-- Video Card 3 -->
             <article class="video-card" data-category="dji">
                 <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@640w_360h_1c" 
+                        <img src="https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@640w_360h_1c" 
                              alt="MINI4PRO炸机记录" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">01:53</div>
@@ -230,11 +245,10 @@
                 </a>
             </article>
 
-            <!-- Video Card 4 -->
             <article class="video-card" data-category="mc">
                 <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@640w_360h_1c" 
+                        <img src="https://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@640w_360h_1c" 
                              alt="树莓派开MC服务器" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">02:15</div>
@@ -253,11 +267,10 @@
                 </a>
             </article>
 
-            <!-- Video Card 5 -->
             <article class="video-card" data-category="dji">
                 <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@640w_360h_1c" 
+                        <img src="https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@640w_360h_1c" 
                              alt="rc2打开桌面教程" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">00:42</div>
@@ -276,11 +289,10 @@
                 </a>
             </article>
 
-            <!-- Video Card 6 -->
             <article class="video-card" data-category="dji">
                 <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="card-link" target="_blank">
                     <div class="card-thumbnail">
-                        <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@640w_360h_1c" 
+                        <img src="https://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@640w_360h_1c" 
                              alt="DJI Pocket 3夜间画质" loading="lazy">
                         <div class="card-play">▶</div>
                         <div class="card-duration">00:05</div>
@@ -310,7 +322,7 @@
         </div>
     </section>
 
-    <!-- Written Reviews Section -->
+    <!-- Reviews Section -->
     <section class="section reviews-section" id="reviews" data-section-color="blue">
         <div class="section-header">
             <div class="section-label">专栏文章</div>
@@ -318,28 +330,11 @@
             <p class="section-desc">B站专栏文章精选，比视频更详细的图文教程与评测。</p>
         </div>
 
-        <!-- Sticky Video Player (shows when reading reviews) -->
-        <div class="sticky-video" id="stickyVideo">
-            <div class="sticky-video-inner">
-                <div class="sticky-player">
-                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@320w_180h_1c" alt="正在播放">
-                    <div class="sticky-play">▶</div>
-                </div>
-                <div class="sticky-info">
-                    <span class="sticky-title">MINI4PRO无GPS返航记录</span>
-                    <span class="sticky-status">正在播放</span>
-                </div>
-                <button class="sticky-close" id="stickyClose" aria-label="关闭">✕</button>
-            </div>
-        </div>
-
-        <!-- Reviews Grid -->
         <div class="reviews-grid">
-            <!-- Review 1 -->
             <article class="review-card featured">
                 <a href="https://www.bilibili.com/read/cv36043724" class="review-link-wrapper" target="_blank">
                     <div class="review-thumbnail">
-                        <img src="http://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@800w_450h_1c" 
+                        <img src="https://i0.hdslb.com/bfs/archive/c761dfb1820290f209fa1b831a3d443f610133c4.jpg@800w_450h_1c" 
                              alt="树莓派MC服务器教程" loading="lazy">
                         <div class="review-badge">热门教程</div>
                         <div class="review-read-time">
@@ -356,7 +351,7 @@
                             <span class="tag">教程</span>
                         </div>
                         <h3 class="review-title">树莓派开MC高版本服务器完整教程（附MCSM面板）</h3>
-                        <p class="review-excerpt">从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。包含下载软件、获取root权限、安装MCSM面板、配置Fabric服务器等完整步骤。</p>
+                        <p class="review-excerpt">从刷系统到启动服务器，手把手教你用树莓派搭建 Minecraft 服务器。</p>
                         <div class="review-highlights">
                             <div class="highlight">
                                 <span class="highlight-label">阅读量</span>
@@ -381,11 +376,10 @@
                 </a>
             </article>
 
-            <!-- Review 2 -->
             <article class="review-card">
                 <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="review-link-wrapper" target="_blank">
                     <div class="review-thumbnail">
-                        <img src="http://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@800w_450h_1c" 
+                        <img src="https://i2.hdslb.com/bfs/archive/88689a10213f19d96beaf1963c2434285e2a24cc.jpg@800w_450h_1c" 
                              alt="创维电视教程" loading="lazy">
                         <div class="review-read-time">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -412,11 +406,10 @@
                 </a>
             </article>
 
-            <!-- Review 3 -->
             <article class="review-card">
                 <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="review-link-wrapper" target="_blank">
                     <div class="review-thumbnail">
-                        <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@800w_450h_1c" 
+                        <img src="https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@800w_450h_1c" 
                              alt="大疆RC2教程" loading="lazy">
                         <div class="review-read-time">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -453,7 +446,6 @@
             <p class="section-desc">我正在使用的设备清单，从无人机到开发板，都是真金白银买的。</p>
         </div>
 
-        <!-- Price Range Slider -->
         <div class="price-filter">
             <div class="price-label">预算范围</div>
             <div class="price-slider-container">
@@ -473,9 +465,7 @@
             </div>
         </div>
 
-        <!-- Recommendations Grid -->
         <div class="recommendations-grid" id="recommendationsGrid">
-            <!-- Recommendation 1 -->
             <a href="https://www.bilibili.com/video/BV1Uif8BjE1h" class="rec-card" data-price="299" target="_blank">
                 <div class="rec-rank">#1</div>
                 <div class="rec-image">
@@ -494,7 +484,6 @@
                 </div>
             </a>
 
-            <!-- Recommendation 2 -->
             <a href="https://www.bilibili.com/video/BV1ucuRzCEbh" class="rec-card" data-price="599" target="_blank">
                 <div class="rec-rank">#2</div>
                 <div class="rec-image">
@@ -513,11 +502,10 @@
                 </div>
             </a>
 
-            <!-- Recommendation 3 -->
             <a href="https://www.bilibili.com/video/BV1skHKzeEZ7" class="rec-card" data-price="2499" target="_blank">
                 <div class="rec-rank">#3</div>
                 <div class="rec-image">
-                    <img src="http://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c" 
+                    <img src="https://i0.hdslb.com/bfs/archive/fbf64d76522b886574c41715ef7785d3c24d5f85.jpg@400w_400h_1c" 
                          alt="DJI Pocket 3" loading="lazy">
                 </div>
                 <div class="rec-body">
@@ -532,30 +520,10 @@
                 </div>
             </a>
 
-            <!-- Recommendation 4 -->
-            <a href="https://www.bilibili.com/video/BV1Rp4y137md" class="rec-card" data-price="4999" target="_blank">
+            <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="rec-card" data-price="6388" target="_blank">
                 <div class="rec-rank">#4</div>
                 <div class="rec-image">
-                    <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&h=400&fit=crop" 
-                         alt="创维电视" loading="lazy">
-                </div>
-                <div class="rec-body">
-                    <div class="rec-category">电视</div>
-                    <h3 class="rec-title">创维电视（可刷机款）</h3>
-                    <p class="rec-reason">能装第三方应用的智能电视，自由度拉满。</p>
-                    <div class="rec-price">¥4,999</div>
-                    <div class="rec-verdict">
-                        <span class="verdict-label">推荐指数</span>
-                        <span class="verdict-score">7.5/10</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Recommendation 5 -->
-            <a href="https://www.bilibili.com/video/BV1LQWGzzEFR" class="rec-card" data-price="6388" target="_blank">
-                <div class="rec-rank">#5</div>
-                <div class="rec-image">
-                    <img src="http://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c" 
+                    <img src="https://i0.hdslb.com/bfs/archive/e8567cb0cf0b339da4cab79dc252753e503618f9.jpg@400w_400h_1c" 
                          alt="大疆 MINI 4 PRO" loading="lazy">
                 </div>
                 <div class="rec-body">
@@ -570,11 +538,10 @@
                 </div>
             </a>
 
-            <!-- Recommendation 6 -->
             <a href="https://www.bilibili.com/video/BV1MxedzkE9b" class="rec-card" data-price="5999" target="_blank">
-                <div class="rec-rank">#6</div>
+                <div class="rec-rank">#5</div>
                 <div class="rec-image">
-                    <img src="http://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c" 
+                    <img src="https://i1.hdslb.com/bfs/archive/4fb19ee63c39cb5b8b0ea17d885b79e37c2fe085.jpg@400w_400h_1c" 
                          alt="大疆 RC2 遥控器" loading="lazy">
                 </div>
                 <div class="rec-body">
@@ -592,14 +559,13 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="section contact-section" id="newsletter" data-section-color="white">
+    <section class="section contact-section" id="contact" data-section-color="white">
         <div class="contact-grid">
-            <!-- Newsletter -->
             <div class="contact-card">
                 <div class="contact-icon">📬</div>
                 <h3 class="contact-title">关注动态</h3>
-                <p class="contact-desc">在B站关注我，第一时间获取新视频通知。也可以加QQ群 3630615032 交流。</p>
-                <div class="contact-trust" style="margin-top: 20px;">
+                <p class="contact-desc">在B站关注我，第一时间获取新视频通知。也可以加QQ群交流。</p>
+                <div style="margin-top: 24px;">
                     <a href="https://space.bilibili.com/1248933612" class="btn btn-primary" target="_blank">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
@@ -607,25 +573,24 @@
                         关注 B站
                     </a>
                 </div>
-                <div class="contact-trust" style="margin-top: 16px;">
+                <div style="margin-top: 16px; font-size: 0.8rem; color: rgba(255,255,255,0.5);">
                     <span>已有 274 位粉丝</span>
-                    <span>·</span>
+                    <span> · </span>
                     <span>累计 105.9 万播放</span>
                 </div>
             </div>
 
-            <!-- Contact -->
             <div class="contact-card">
                 <div class="contact-icon">💬</div>
                 <h3 class="contact-title">联系我</h3>
                 <p class="contact-desc">有问题想问？想合作？可以通过以下方式联系我。</p>
                 <div class="contact-tiers">
-                    <a href="https://qm.qq.com/q/3630615032" class="tier" target="_blank">
+                    <a href="https://qm.qq.com/q/udTox4DmjC" class="tier" target="_blank">
                         <div class="tier-name">QQ 群</div>
-                        <div class="tier-price">3630615032</div>
+                        <div class="tier-price">点击加入</div>
                         <div class="tier-perks">技术交流</div>
                     </a>
-                    <a href="https://space.bilibili.com/1248933612" class="tier featured" target="_blank">
+                    <a href="https://message.bilibili.com/#/whisper/mid1248933612" class="tier featured" target="_blank">
                         <div class="tier-badge">推荐</div>
                         <div class="tier-name">B站私信</div>
                         <div class="tier-price">随时在线</div>
@@ -637,10 +602,7 @@
                         <div class="tier-perks">开源项目</div>
                     </a>
                 </div>
-                <a href="https://space.bilibili.com/1248933612" class="btn btn-patreon" target="_blank">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
-                    </svg>
+                <a href="https://space.bilibili.com/1248933612" class="btn btn-bilibili" target="_blank">
                     去 B站 看看
                 </a>
             </div>
@@ -715,8 +677,8 @@
                 </div>
                 <div class="footer-col">
                     <h4>联系</h4>
-                    <a href="https://space.bilibili.com/1248933612" target="_blank">B站私信</a>
-                    <a>QQ群: 3630615032</a>
+                    <a href="https://message.bilibili.com/#/whisper/mid1248933612" target="_blank">B站私信</a>
+                    <a href="https://qm.qq.com/q/udTox4DmjC" target="_blank">QQ群</a>
                 </div>
             </div>
         </div>
@@ -733,6 +695,198 @@
         </svg>
     </button>
 
-    <script src="script.js"></script>
+    <script>
+        // ===== Page Loader - Immediate =====
+        (function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) {
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        loader.classList.add('loaded');
+                    }, 300);
+                });
+                setTimeout(function() {
+                    loader.classList.add('loaded');
+                    setTimeout(function() {
+                        loader.style.display = 'none';
+                    }, 600);
+                }, 1500);
+            }
+        })();
+    </script>
+    <script>
+        // ===== Core Interactive Features =====
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ===== Navigation Scroll =====
+            var nav = document.getElementById('mainNav');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // ===== Mobile Menu =====
+            var navToggle = document.getElementById('navToggle');
+            var mobileMenu = document.getElementById('mobileMenu');
+            if (navToggle && mobileMenu) {
+                navToggle.addEventListener('click', function() {
+                    navToggle.classList.toggle('active');
+                    mobileMenu.classList.toggle('active');
+                });
+                document.querySelectorAll('.mobile-link').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navToggle.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                    });
+                });
+            }
+
+            // ===== Smooth Scroll =====
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        var top = target.getBoundingClientRect().top + window.scrollY - 80;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // ===== Stats Counter Animation =====
+            var statsAnimated = false;
+            function animateStats() {
+                if (statsAnimated) return;
+                var statsSection = document.querySelector('.stats-bar');
+                if (!statsSection) return;
+                var rect = statsSection.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                    statsAnimated = true;
+                    document.querySelectorAll('.stat-number').forEach(function(stat) {
+                        var target = parseInt(stat.dataset.target);
+                        var duration = 2000;
+                        var start = performance.now();
+                        function update(currentTime) {
+                            var elapsed = currentTime - start;
+                            var progress = Math.min(elapsed / duration, 1);
+                            var eased = 1 - Math.pow(1 - progress, 4);
+                            var current = Math.floor(eased * target);
+                            if (target >= 10000) {
+                                stat.textContent = (current / 10000).toFixed(1) + '万';
+                            } else {
+                                stat.textContent = current.toLocaleString();
+                            }
+                            if (progress < 1) {
+                                requestAnimationFrame(update);
+                            } else {
+                                stat.textContent = target >= 10000 ? (target / 10000).toFixed(1) + '万' : target.toLocaleString();
+                            }
+                        }
+                        requestAnimationFrame(update);
+                    });
+                }
+            }
+            window.addEventListener('scroll', animateStats, { passive: true });
+            animateStats();
+
+            // ===== Video Category Filters =====
+            var filterBtns = document.querySelectorAll('.filter-btn');
+            var videoCards = document.querySelectorAll('.video-card');
+            filterBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    var category = btn.dataset.category;
+                    videoCards.forEach(function(card, index) {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.transitionDelay = (index * 50) + 'ms';
+                            card.classList.remove('hidden');
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0) scale(1)';
+                        } else {
+                            card.style.transitionDelay = '0ms';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px) scale(0.95)';
+                            setTimeout(function() { card.classList.add('hidden'); }, 300);
+                        }
+                    });
+                });
+            });
+
+            // ===== Price Range Slider =====
+            var priceSlider = document.getElementById('priceSlider');
+            var priceDisplay = document.getElementById('priceDisplay');
+            var priceCount = document.getElementById('priceCount');
+            var recCards = document.querySelectorAll('.rec-card');
+            if (priceSlider) {
+                priceSlider.addEventListener('input', function() {
+                    var value = parseInt(priceSlider.value);
+                    priceDisplay.textContent = '¥' + value.toLocaleString();
+                    var count = 0;
+                    recCards.forEach(function(card, index) {
+                        var price = parseInt(card.dataset.price);
+                        if (price <= value) {
+                            card.style.transitionDelay = (count * 60) + 'ms';
+                            card.classList.remove('hidden');
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0) scale(1)';
+                            count++;
+                        } else {
+                            card.style.transitionDelay = '0ms';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px) scale(0.95)';
+                            setTimeout(function() { card.classList.add('hidden'); }, 300);
+                        }
+                    });
+                    priceCount.textContent = count + ' 款推荐';
+                });
+                priceSlider.dispatchEvent(new Event('input'));
+            }
+
+            // ===== Scroll Reveal =====
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+            document.querySelectorAll('.video-card, .review-card, .rec-card').forEach(function(card) {
+                observer.observe(card);
+            });
+
+            // ===== Back to Top =====
+            var backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 500) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                }, { passive: true });
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // ===== Scroll Progress =====
+            var scrollProgress = document.querySelector('.scroll-progress');
+            if (scrollProgress) {
+                window.addEventListener('scroll', function() {
+                    var scrollTop = window.scrollY;
+                    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    var progress = docHeight > 0 ? scrollTop / docHeight : 0;
+                    scrollProgress.style.transform = 'scaleX(' + progress + ')';
+                }, { passive: true });
+            }
+
+            console.log('✅ BCMOJANG 网站加载完成');
+        });
+    </script>
 </body>
 </html>

@@ -470,7 +470,7 @@ svg.i .fd{fill:currentColor;stroke:none}
 </div>
 </section>
 
-<script src="serial.js?v19728"></script>
+<script src="serial.js?v23972"></script>
 <script>
 /* ================= 全局：页面导航 + 串口栏 ================= */
 var cur = null;
@@ -494,7 +494,7 @@ DS.mountBar('dsbar');
 document.addEventListener('DOMContentLoaded', function () {
   if (!DS.supported()) {
     var ph = document.getElementById('prevhint');
-    if (ph) { ph.style.display = 'block'; ph.textContent = '此浏览器不支持 Web Serial（需 Chrome；Android 需较新版本；页面需 HTTPS）'; }
+    if (ph) { ph.style.display = 'block'; ph.textContent = '此浏览器不支持 Web Serial / Web Bluetooth（需 Chrome；Android 需较新版本；页面需 HTTPS）'; }
   }
   var init = (location.hash || '').replace('#', '');
   if (['home', 'scan', 'status', 'spoof'].indexOf(init) < 0) init = 'home';

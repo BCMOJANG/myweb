@@ -7,6 +7,11 @@
 (function () {
   'use strict';
   var port = null, reader = null, writer = null;
+  // 蓝牙通道（Web Bluetooth + Nordic UART Service；与 USB 二选一使用）
+  var bleDev = null, bleGatt = null, bleRxChar = null, bleTxChar = null;
+  var NUS_SVC = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+  var NUS_RX = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+  var NUS_TX = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
   var lineBuf = '';
   var recent = [];            // 最近收到的原始串口行（调试面板用）
   var queue = [];            // 待发命令（仅队首在途）
@@ -101,7 +106,7 @@
       cb.reject(new Error('timeout:' + cb.cmd));
       pump();
     }, cb.timeout);
-    writer.write(new TextEncoder().encode(cb.cmd + '\n')).catch(function (e) {
+    transportWrite(cb.cmd).catch(function (e) {
       sending = false;
       var i = queue.indexOf(cb);
       if (i >= 0) queue.splice(i, 1);
@@ -110,18 +115,45 @@
     });
   }
 
+  function drainLines() {
+    var idx;
+    while ((idx = lineBuf.indexOf('\n')) >= 0) {
+      var line = lineBuf.slice(0, idx);
+      lineBuf = lineBuf.slice(idx + 1);
+      if (line.charAt(line.length - 1) === '\r') line = line.slice(0, -1);
+      if (line) handleLine(line);
+    }
+  }
+
+  // BLE notify 数据：与 USB 一样按字节流拼接，'\n' 为一条消息结束
+  function onBleData(ev) {
+    lineBuf += new TextDecoder().decode(new Uint8Array(ev.target.value.buffer));
+    drainLines();
+  }
+
+  // 写命令：蓝牙走 GATT（>480 字节分包，writeValue 可靠有序），USB 走 writer
+  function transportWrite(cmd) {
+    var data = new TextEncoder().encode(cmd + '\n');
+    if (bleRxChar) {
+      var CH = 480;
+      if (data.length <= CH) return bleRxChar.writeValue(data);
+      var p = Promise.resolve();
+      for (var i = 0; i < data.length; i += CH) {
+        (function (part) {
+          p = p.then(function () { return bleRxChar.writeValue(part); });
+        })(data.slice(i, Math.min(i + CH, data.length)));
+      }
+      return p;
+    }
+    return writer.write(data);
+  }
+
   function readLoop() {
     if (!reader) return;
     reader.read().then(function (res) {
       if (res.done) { lost('port-closed'); return; }
       lineBuf += new TextDecoder().decode(res.value);
-      var idx;
-      while ((idx = lineBuf.indexOf('\n')) >= 0) {
-        var line = lineBuf.slice(0, idx);
-        lineBuf = lineBuf.slice(idx + 1);
-        if (line.charAt(line.length - 1) === '\r') line = line.slice(0, -1);
-        if (line) handleLine(line);
-      }
+      drainLines();
       readLoop();
     }).catch(function (e) { lost(e); });
   }
@@ -140,9 +172,12 @@
 
   function lost(err) {
     if (state === 'off' || state === 'unsupported') return;
+    var wasBt = !!bleGatt;
+    btDisconnect();
     var wasOpen = !!port;
     var msg = err ? (err.message || String(err)) : '';
     if (err === 'port-closed') msg = '设备端口关闭（可能被拔出）';
+    if (err === 'ble-disconnected') msg = '蓝牙连接已断开';
     lastErr = msg;
     cleanupPort();
     // 刚连上就断开：多半是设备被 USB 复位后重新枚举（相当于拔出再插入），
@@ -171,6 +206,7 @@
   // 主动断开：回到未连接，可重新选择设备
   function disconnect() {
     cleanupPort();
+    btDisconnect();
     autoRetrying = false;
     warnText = '';
     lastErr = '';
@@ -224,6 +260,7 @@
           return;
         }
         port = p;
+        if (bleGatt) btDisconnect();   // 固件检测到 USB 会停蓝牙，网页同步
         // 有些设备（含 ESP32 USB 串口）会被 DTR/RTS 拉高触发复位，尽量保持低电平
         try { p.setSignals({ dtr: false, rts: false }).catch(function () {}); } catch (e) {}
         writer = p.writable.getWriter();
@@ -269,10 +306,53 @@
     return req.then(openPort);
   }
 
+  // ---- 蓝牙通道（Web Bluetooth + NUS）----
+  function btDisconnect() {
+    if (bleGatt) { try { bleGatt.disconnect(); } catch (e) {} }
+    bleGatt = null; bleDev = null; bleRxChar = null; bleTxChar = null;
+  }
+
+  function btConnect() {
+    if (bleGatt) return Promise.resolve(true);
+    if (!navigator.bluetooth) { setState('unsupported'); return Promise.reject(new Error('no-bluetooth')); }
+    lastErr = '';
+    warnText = '';
+    if (port) disconnect();          // 蓝牙优先：先断开 USB
+    setState('connecting');
+    return navigator.bluetooth.requestDevice({ filters: [{ services: [NUS_SVC] }] })
+      .then(function (dev) {
+        bleDev = dev;
+        dev.addEventListener('gattserverdisconnected', function () { lost('ble-disconnected'); });
+        return dev.gatt.connect();
+      })
+      .then(function (gatt) {
+        bleGatt = gatt;
+        return gatt.getPrimaryService(NUS_SVC);
+      })
+      .then(function (svc) {
+        return Promise.all([svc.getCharacteristic(NUS_RX), svc.getCharacteristic(NUS_TX)]);
+      })
+      .then(function (chs) {
+        bleRxChar = chs[0]; bleTxChar = chs[1];
+        return bleTxChar.startNotifications();
+      })
+      .then(function () {
+        bleTxChar.addEventListener('characteristicvaluechanged', onBleData);
+        setState('ok');
+        verifyDevice();              // 复用 PING 验证
+        return true;
+      })
+      .catch(function (e) {
+        btDisconnect();
+        if (state !== 'off') { lastErr = '蓝牙连接失败：' + (e && e.message ? e.message : String(e)); setState('lost'); }
+        throw e;
+      });
+  }
+
   // 页面同一条命令失败后应重试同一条命令；不同命令会排队串行发送
   function cmd(command, timeoutMs) {
     return new Promise(function (resolve, reject) {
-      if (!port || !writer) { reject(new Error('not-connected')); return; }
+      if (!port && !bleRxChar) { reject(new Error('not-connected')); return; }
       queue.push({ cmd: command, resolve: resolve, reject: reject, timeout: timeoutMs || 6000, timer: null });
       pump();
     });
@@ -280,8 +360,8 @@
 
   function onData(fn) { dataFns.push(fn); }
   function onStatus(fn) { statusFns.push(fn); }
-  function isConnected() { return !!port; }
-  function supported() { return !!(navigator.serial); }
+  function isConnected() { return !!port || !!bleGatt; }
+  function supported() { return !!(navigator.serial || navigator.bluetooth); }
   function getState() { return state; }
 
   /* ---------- 顶部连接栏 UI ---------- */
@@ -296,22 +376,32 @@
     var html = '<div style="display:flex;align-items:center;gap:8px;background:#111;border-bottom:1px solid rgba(255,255,255,.12);padding:7px 16px;font-size:12px;color:rgba(255,255,255,.85);flex-wrap:wrap">'
       + '<span style="width:8px;height:8px;border-radius:50%;background:' + c + ';flex-shrink:0"></span>'
       + '<span style="font-weight:600">' + labels[state] + '</span>'
-      + (state === 'ok' ? '<span style="color:rgba(255,255,255,.45)">USB 串口已打开 · 数据走 Web Serial</span>' : '')
+      + (state === 'ok' ? '<span style="color:rgba(255,255,255,.45)">' + (bleGatt ? 'BLE 已连接 · 数据走蓝牙' : 'USB 串口已打开 · 数据走 Web Serial') + '</span>' : '')
       + (state === 'ok' && warnText ? '<span style="color:#FCE100;max-width:55%;min-width:200px">' + escHtml(warnText) + '</span>' : '')
       + '<span style="flex:1"></span>';
     if (state === 'off' || state === 'lost') {
       if (state === 'lost' && lastErr) {
+        var isBt = lastErr.indexOf('蓝牙') >= 0;
         html += '<span style="color:rgba(255,255,255,.45);max-width:55%;min-width:200px">原因：' + escHtml(lastErr)
-          + '。同一串口只能被一个程序占用，请关闭 Arduino IDE 串口监视器和其他标签页，可拔出 USB 重插后再试。</span>';
+          + (isBt ? '。请确认板子已开机 5 秒以上（蓝牙自动开启），并在手机系统蓝牙设置里能看到 DroneScanner。'
+                  : '。同一串口只能被一个程序占用，请关闭 Arduino IDE 串口监视器和其他标签页，可拔出 USB 重插后再试。')
+          + '</span>';
       }
-      html += '<button id="dsbtn" style="background:#4CC2FF;color:#000;border:none;border-radius:4px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer">连接设备</button>';
+      html += '<button id="dsbtn" style="background:#4CC2FF;color:#000;border:none;border-radius:4px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer">USB 连接</button>';
+      if (navigator.bluetooth) {
+        html += '<button id="dsbt" style="background:rgba(80,180,255,.25);color:#8fd0ff;border:1px solid rgba(80,180,255,.45);border-radius:4px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer">蓝牙连接</button>';
+      }
     } else if (state === 'connecting') {
       html += '<span style="color:rgba(255,255,255,.45)">'
-        + (autoRetrying ? '设备刚被复位，正在自动重连…' : '正在连接设备…（已记住的设备会自动连接，无需重新选择）')
+        + (autoRetrying ? '设备刚被复位，正在自动重连…' : '正在连接…（USB 会自动连已记住的设备；蓝牙请在弹出的列表里选择 DroneScanner）')
         + '</span>';
       html += '<button id="dsbtn2" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;cursor:pointer">取消</button>';
     } else if (state === 'ok') {
-      html += '<button id="dsbtn2" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;cursor:pointer">切换设备</button>';
+      if (bleGatt) {
+        html += '<button id="dsbt2" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;cursor:pointer">断开蓝牙</button>';
+      } else {
+        html += '<button id="dsbtn2" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;cursor:pointer">切换设备</button>';
+      }
       html += '<button id="dsbtn3" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;cursor:pointer">调试</button>';
     } else if (state === 'unsupported') {
       html += '<span style="color:rgba(255,255,255,.45)">需使用 Chrome（Android 需较新版本），并需 HTTPS 页面</span>';
@@ -322,6 +412,13 @@
       btn.disabled = true;
       connect(true).catch(function () { if (barHost) renderBar(); });
     };
+    var bt = document.getElementById('dsbt');
+    if (bt) bt.onclick = function () {
+      bt.disabled = true;
+      btConnect().catch(function () { if (barHost) renderBar(); });
+    };
+    var bt2 = document.getElementById('dsbt2');
+    if (bt2) bt2.onclick = function () { btDisconnect(); setState('off'); renderBar(); };
     var btn2 = document.getElementById('dsbtn2');
     if (btn2) btn2.onclick = function () { disconnect(); };
     var btn3 = document.getElementById('dsbtn3');
@@ -389,7 +486,7 @@
   function mountBar(hostId) {
     barHost = document.getElementById(hostId || 'dsbar');
     if (!barHost) return;
-    if (!navigator.serial) { setState('unsupported'); return; }
+    if (!navigator.serial && !navigator.bluetooth) { setState('unsupported'); return; }
     renderBar();
     // 已授权过的端口：自动重连（无需用户手势；无授权则不弹窗，等用户点按钮）。
     // 切换页面时旧页面可能还没释放串口，失败或暂时取不到授权都延迟重试几次。
@@ -416,6 +513,8 @@
   window.DS = {
     connect: connect,
     disconnect: disconnect,
+    btConnect: btConnect,
+    btDisconnect: btDisconnect,
     cmd: cmd,
     onData: onData,
     onStatus: onStatus,

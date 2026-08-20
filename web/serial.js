@@ -96,7 +96,7 @@
   }
 
   function pump() {
-    if (sending || !writer || !queue.length) return;
+    if (sending || (!writer && !bleRxChar) || !queue.length) return;   // USB 或 BLE 任一可用即可
     var cb = queue[0];
     sending = true;
     cb.timer = setTimeout(function () {
@@ -127,7 +127,9 @@
 
   // BLE notify 数据：与 USB 一样按字节流拼接，'\n' 为一条消息结束
   function onBleData(ev) {
-    lineBuf += new TextDecoder().decode(new Uint8Array(ev.target.value.buffer));
+    var dv = ev.target.value;   // DataView
+    var bytes = new Uint8Array(dv.buffer, dv.byteOffset, dv.byteLength);
+    lineBuf += new TextDecoder().decode(bytes);
     drainLines();
   }
 

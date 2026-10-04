@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="app.title">ESP-WebSDR · ESP32 频谱查看器</title>
+<link rel="icon" type="image/png" sizes="194x194" href="favicon-194x194.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<script defer src="i18n.js"></script>
+<script defer src="radio.js"></script>
+<script defer src="app.js"></script>
+<script defer src="ui.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <a href="https://espargos.net/" aria-label="ESPARGOS 官网" data-i18n-aria="brand.home"><img class="brand-logo" src="espargos-logo.svg" alt="ESPARGOS" width="175" height="35"></a>
+    <div>
+      <h1>ESP-WebSDR</h1>
+      <span data-i18n="brand.subtitle">用 Espressif ESP32 芯片抓取原始 I/Q 信号</span>
+    </div>
+  </div>
+  <div class="connection">
+    <span id="light"></span>
+    <span id="status">未连接</span>
+    <div id="chipIdentity" class="chip-identity" hidden>
+      <span id="deviceModel" aria-live="polite" aria-describedby="chipStats" tabindex="0" hidden></span>
+      <div id="chipStats" role="tooltip" hidden></div>
+    </div>
+    <span id="baudStatus" hidden></span>
+    <button id="guideToggle" class="ghost" type="button" aria-controls="helpPanel" aria-expanded="false" data-i18n="header.guide" data-i18n-title="header.guideTitle" title="显示 / 隐藏使用说明">使用说明</button>
+    <button id="langToggle" class="ghost" type="button" data-i18n="header.lang" data-i18n-title="header.langTitle" title="切换为英文界面">EN</button>
+    <div class="connect-buttons">
+      <button id="connect">连接 ESP-SDR</button>
+      <button id="choosePort" type="button" aria-label="连接选项" data-i18n-aria="conn.menuAria" title="连接选项" aria-haspopup="menu" aria-expanded="false" aria-controls="connectMenu"><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="m2 2 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div id="connectMenu" role="menu" aria-label="连接选项" data-i18n-aria="conn.menuAria" hidden>
+        <button id="openRecent" type="button" role="menuitem" data-i18n="conn.last">连接上次使用的设备</button>
+        <button id="openOther" type="button" role="menuitem" data-i18n="conn.choose">选择串口…</button>
+        <a id="openFlasher" role="menuitem" href="flash.html" target="_blank" rel="noopener noreferrer" data-i18n="conn.flash">刷写固件…</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 使用说明：由右上角「使用说明」按钮展开，纯静态内容，不参与无线电逻辑 -->
+<section id="helpPanel" hidden aria-labelledby="helpTitle">
+  <h2 id="helpTitle" data-i18n="help.title">使用说明</h2>
+  <div class="help-grid">
+    <article>
+      <h3 data-i18n="help.what.h">这是什么</h3>
+      <p data-i18n="help.what.p">ESP-WebSDR 是一个纯浏览器端的频谱查看器。它通过 WebSerial 直接读串口，把 ESP32 芯片内部那条未公开的原始 I/Q 采样通道变成一台低成本的 2.4 GHz 软件无线电接收机；不经过任何服务器，数据不离开本机。</p>
+    </article>
+    <article>
+      <h3 data-i18n="help.steps.h">三步上手</h3>
+      <ol>
+        <li data-i18n="help.step1">把开发板用 USB 接到电脑（优先使用板上的原生 USB 口，而不是 CH340/CP2102 那种串口桥）。</li>
+        <li data-i18n="help.step2">打开「刷写固件…」，选择与芯片匹配的固件并写入。刷好后拔下设备等 5 秒再插回。</li>
+        <li data-i18n="help.step3">回到本页点右上角「连接 ESP-SDR」，然后设置中心频率，频谱与瀑布图就会开始刷新。</li>
+      </ol>
+    </article>
+    <article>
+      <h3 data-i18n="help.params.h">参数怎么选</h3>
+      <p data-i18n="help.params.p1">只看 2.4 GHz 有没有信号、想快速摸清环境：用「片上频谱」，80 MS/s 覆盖整段 ISM，配合 1024 或 2048 频点。</p>
+      <p data-i18n="help.params.p2">想看清某个窄带信号、或需要原始 I/Q 自己做处理：用「I/Q 流」，降低采样率（例如 20 MS/s）能让每帧更长、更连续。</p>
+      <p data-i18n="help.params.p3">信号弱：先确认增益（硬件 AGC 或手动调高），再考虑缩小模拟带宽压低底噪，最后才用迹线平均。</p>
+    </article>
+    <article>
+      <h3 data-i18n="help.limits.h">重要限制</h3>
+      <ul>
+        <li data-i18n="help.limits.1">数据是间断的：串口带宽远小于射频采样率，除个别芯片的连续模式外，两次采集之间会丢信号，因此不适合解调连续数据。</li>
+        <li data-i18n="help.limits.2">频段有限：只有 2.4 GHz 附近（ESP32-C5 额外支持 5 GHz），收不到 433 MHz、HF 或卫星信号。</li>
+        <li data-i18n="help.limits.3">增益与功率未标定：dBFS 数值是相对值，不能当作绝对功率计量。</li>
+        <li data-i18n="help.limits.4">仅接收：项目不提供发射实现。接收本身一般无需许可，但发射或干扰在多数地区违法。</li>
+        <li data-i18n="help.limits.5">需要桌面浏览器：WebSerial 只在 Chrome、Edge、Firefox 桌面版可用，并且必须通过 HTTPS 或 localhost 打开。</li>
+      </ul>
+    </article>
+    <article>
+      <h3 data-i18n="help.faq.h">常见问题</h3>
+      <dl class="faq">
+        <dt data-i18n="help.faq.q1">连接失败或一直显示「未连接」？</dt>
+        <dd data-i18n="help.faq.a1">确认没有别的程序占用串口（串口监视器、esptool、其他 SDR 软件）；确认已刷入 ESP-SDR 固件；插拔一次让板子复位；必要时按住 BOOT 再插入以进入下载模式重新刷写。</dd>
+        <dt data-i18n="help.faq.q2">出现 CRC 错误或采样丢失？</dt>
+        <dd data-i18n="help.faq.a2">页面会自动提示。降低采样率、减小 FFT 频点数、换用原生 USB 口、或按提示切换到 1 MBaud 串口速率通常都能改善。</dd>
+        <dt data-i18n="help.faq.q3">频谱只有一条中间尖峰、看不到信号？</dt>
+        <dd data-i18n="help.faq.a3">那是零中频的直流泄漏，正常现象。点击频谱或瀑布图可以把关注频率移开 0 Hz，也可以在「零中频处理」里选择填充 DC 频点。</dd>
+        <dt data-i18n="help.faq.q4">支持哪些芯片？</dt>
+        <dd data-i18n="help.faq.a4">ESP32、ESP32-S2、ESP32-S3、ESP32-C2/C3/C5/C6/C61、ESP32-H2、ESP32-S31 均可刷入 ESP-SDR；具体可用采样率、带宽与片上频谱能力由固件协商决定。</dd>
+        <dt data-i18n="help.faq.q5">中间出现一块 20 MHz 宽的平坦台地？</dt>
+        <dd data-i18n="help.faq.a5">那不是信号，是接收通道的模拟滤波器通带。当「模拟带宽」比「采样率 / 名义跨度」窄时，两侧会被接收机自己削掉，只剩中间这一条。判据：改中心频率它跟着走、改模拟带宽它的边缘跟着动，就是滤波器；勾选「全开」即可看到整个跨度。</dd>
+        <dt data-i18n="help.faq.q6">怎么看信号占的是哪个 WiFi 信道？</dt>
+        <dd data-i18n="help.faq.a6">打开「显示 2.4G WiFi 信道」，频谱上会按 20 MHz 画出信道 1–14 并标号，1/6/11 高亮（唯一互不重叠的组合）。信号压在哪条色带里就是哪个信道；鼠标悬停与「中心」读数也会直接报出信道号。</dd>
+      </dl>
+    </article>
+    <article>
+      <h3 data-i18n="help.about.h">关于本页</h3>
+      <p data-i18n="help.about.p">本页是上游项目 esp-web-sdr 的中文增强版：补上了中文界面、每个控件的说明和这份指南，无线电协议与信号处理逻辑未做改动。上游项目由 ESPARGOS 团队以 GPL-3.0-or-later 发布。</p>
+    </article>
+  </div>
+</section>
+
+<main>
+<aside>
+  <div class="eyebrow" data-i18n="aside.receiver">接收机</div>
+  <p class="desc" data-i18n="desc.receiver">频率、增益与带宽决定「怎么收」。先设中心频率，其余保持默认即可。</p>
+
+  <label><span class="lbl" data-i18n="freq.label">中心频率</span> <span data-i18n="freq.unit">MHz</span><input id="frequency" type="number" min="100" max="6000" step="1" value="2412"></label>
+  <p class="desc" data-i18n="desc.freq">本振频率。ESP32-S3 可尝试 2.2–2.7 GHz，但可靠工作的范围是 2.4 GHz ISM 频段。也可以直接单击频谱或瀑布图调谐。</p>
+  <p id="freqNote" class="note warn" hidden></p>
+  <div class="presets">
+    <button data-freq="2412" data-i18n="freq.preset24">2.4 GHz</button>
+    <button data-freq="5500" data-i18n="freq.preset55">5.5 GHz</button>
+  </div>
+
+  <label title="ESP32 采用零中频结构，本振就在 0 Hz，频谱中心因此会有一条直流 / 本振泄漏尖峰。" data-i18n-title="dc.hint"><span class="lbl" data-i18n="dc.label">零中频处理</span>
+    <select id="dcMode">
+      <option value="raw" selected data-i18n="dc.raw">原样显示</option>
+      <option value="fill" data-i18n="dc.fill">填充 DC 频点</option>
+      <option value="offset" data-i18n="dc.offset">偏移本振（信号离开 0 Hz）</option>
+    </select>
+  </label>
+  <p class="desc" data-i18n="desc.dc">零中频接收机在 0 Hz 处有一条直流 / 本振泄漏尖峰。「填充 DC 频点」把它抹平，「偏移本振」把关注频率挪开 0 Hz。</p>
+
+  <label><span class="lbl" data-i18n="gain.mode">接收增益模式</span>
+    <select id="gainMode">
+      <option value="HARDWARE" selected data-i18n="gain.agc">硬件 AGC（自动）</option>
+      <option value="MANUAL" data-i18n="gain.manual">手动</option>
+    </select>
+  </label>
+  <label><span class="lbl" data-i18n="gain.index">手动增益档位</span> <output id="gainValue">40</output><input id="gain" type="range" min="0" max="0" step="1" value="0" disabled></label>
+  <p class="desc" data-i18n="desc.gain">硬件 AGC 由芯片自动调节；需要固定条件对比时用手动档。增益档是芯片增益表索引，不是 dB。</p>
+  <p id="gainStatus" class="note"></p>
+
+  <div id="bandwidthControl" hidden>
+    <label><span class="lbl" data-i18n="bw.label">模拟带宽</span> <span data-i18n="bw.unit">MHz</span><input id="bandwidth" type="number" min="13" max="54" step="1" value="20" disabled></label>
+    <label class="check"><input id="bandwidthOpen" type="checkbox" disabled><span data-i18n="bw.open">全开</span></label>
+    <p class="desc" data-i18n="desc.bandwidth">接收通道的模拟滤波器带宽。越窄底噪越低，但会削掉信号边缘。它比「采样率 / 名义跨度」窄的时候，频谱两侧是被接收机自己削掉的，中间那块平坦台地只是滤波器通带、不是信号。</p>
+    <p id="bandwidthNote" class="note warn" hidden></p>
+  </div>
+
+  <label><span class="lbl" data-i18n="rate.label">采样率 / 名义跨度</span>
+    <select id="rate">
+      <option value="4000000">4 MS/s · 4 MHz</option>
+      <option value="6400000" disabled>6.4 MS/s · 6.4 MHz</option>
+      <option value="8000000">8 MS/s · 8 MHz</option>
+      <option value="10000000">10 MS/s · 10 MHz</option>
+      <option value="10666667" disabled>10.667 MS/s · 10.667 MHz</option>
+      <option value="16000000" disabled>16 MS/s · 16 MHz</option>
+      <option value="20000000">20 MS/s · 20 MHz</option>
+      <option value="32000000" disabled>32 MS/s · 32 MHz</option>
+      <option value="40000000">40 MS/s · 40 MHz</option>
+      <option value="80000000" selected>80 MS/s · 80 MHz</option>
+    </select>
+  </label>
+  <p class="desc" data-i18n="desc.rate">一屏能看到的频谱宽度。采样率越高，覆盖越宽、单次采集越短，串口压力也越大。80 MS/s 可覆盖整个 2.4 GHz ISM 频段。</p>
+
+  <div class="capture-modes" role="group" aria-labelledby="captureModeLabel">
+    <div id="captureModeLabel" class="eyebrow" data-i18n="capture.mode">捕获模式</div>
+
+    <div id="specControls" hidden>
+      <button id="specMode" class="capture-mode" type="button" aria-pressed="false" aria-controls="specOptions" disabled data-i18n="capture.spec">片上频谱（ESP32 端 FFT）</button>
+      <p class="desc" data-i18n="desc.spec">由 ESP32 自己算好 FFT 再回传：数据量小、刷新快；部分芯片还能连续采集射频。</p>
+      <div id="specOptions" class="capture-options" hidden>
+        <label><span class="lbl" data-i18n="spec.row">瀑布行时间</span>
+          <select id="specRow" disabled>
+            <option value="0" selected data-i18n="spec.rowEvery">每帧频谱</option>
+            <option value="10" data-i18n="spec.row10">10 ms · 取最大</option>
+            <option value="50" data-i18n="spec.row50">50 ms · 取最大</option>
+          </select>
+        </label>
+        <label><span class="lbl" data-i18n="spec.detector">检波方式</span>
+          <select id="specDetector" disabled>
+            <option value="mean" selected data-i18n="spec.detMean">平均（同突发模式）</option>
+            <option value="max" data-i18n="spec.detMax">最大保持（突发、跳变）</option>
+          </select>
+        </label>
+        <p id="specNote" class="note" hidden></p>
+        <p class="note"><span data-i18n="spec.credit">片上频谱由</span> <a href="https://www.z2labs.io" target="_blank" rel="noopener noreferrer">https://www.z2labs.io</a></p>
+      </div>
+    </div>
+
+    <button id="iqMode" class="capture-mode" type="button" aria-pressed="true" aria-controls="iqControls" data-i18n="capture.iq">I/Q 流（电脑端 FFT）</button>
+    <p class="desc" data-i18n="desc.iq">把原始 I/Q 采样传到电脑做 FFT：频点数可调、实现透明，但受串口带宽限制，采样是间断的。</p>
+    <div id="iqControls" class="capture-options">
+      <label id="fftControl"><span class="lbl" data-i18n="fft.bins">FFT 频点数</span>
+        <select id="fft">
+          <option>256</option>
+          <option>512</option>
+          <option>1024</option>
+          <option selected>2048</option>
+          <option>4096</option>
+        </select>
+      </label>
+      <label><span class="lbl" data-i18n="iq.bits">WebSerial I/Q 位深</span>
+        <select id="bits">
+          <option value="8" data-i18n="bits.8">8 + 8 位（更快）</option>
+          <option value="10" data-i18n="bits.10">10 + 10 位（动态更大）</option>
+        </select>
+      </label>
+      <p class="desc" data-i18n="desc.fft">频点数越大，频率分辨率越高（RBW 越细），但每帧需要更多采样，刷新率下降。2048 是通用折中。</p>
+      <p class="desc" data-i18n="desc.bits">8+8 位传输更快，适合高采样率；10+10 位量化噪声更低，弱信号更清楚。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="eyebrow" data-i18n="display.title">显示</div>
+
+  <label><span class="lbl" data-i18n="display.floor">底噪（Floor）</span> <output id="floorValue">−100 dBFS</output><input id="floor" type="range" min="-140" max="-40" value="-100"></label>
+  <label><span class="lbl" data-i18n="display.range">动态范围（Range）</span> <output id="rangeValue">80 dB</output><input id="range" type="range" min="20" max="120" value="80"></label>
+  <p class="desc" data-i18n="desc.floorRange">底噪决定瀑布图颜色从哪里开始，动态范围决定颜色覆盖多少 dB。开启「自动缩放」会按当前噪声自动调整。</p>
+
+  <label><span class="lbl" data-i18n="display.average">迹线平均</span>
+    <select id="average">
+      <option value="0" data-i18n="avg.off">关闭</option>
+      <option selected value="0.3" data-i18n="avg.short">短</option>
+      <option value="0.65" data-i18n="avg.medium">中</option>
+      <option value="0.9" data-i18n="avg.high">强</option>
+    </select>
+  </label>
+  <p class="desc" data-i18n="desc.average">对相邻帧做指数平均，噪声更稳、弱信号更明显，但会掩盖快速变化。</p>
+
+  <label class="check"><input id="hold" type="checkbox"><span data-i18n="display.hold">最大保持</span></label>
+  <p class="desc" data-i18n="desc.hold">逐频点保留历史最大值，用来发现间歇性突发（如蓝牙广播）。</p>
+  <label class="check"><input id="autoscale" type="checkbox"><span data-i18n="display.autoscale">自动缩放纵轴</span></label>
+  <label class="check"><input id="wifiChannels" type="checkbox" checked><span data-i18n="display.wifi">显示 2.4G WiFi 信道</span></label>
+  <p class="desc" data-i18n="desc.wifi">在频谱上标出 2.4 GHz WiFi 的 1–14 信道（每个约 20 MHz 宽）。1、6、11 三个互不重叠，图中高亮，最值得关注；信号落在哪条色带里，就说明它占着哪个信道。鼠标停在频谱上还会直接报出信道号。</p>
+
+  <div class="actions">
+    <button id="pause" disabled data-i18n="action.pause">暂停</button>
+    <button id="clear" data-i18n="action.clear">清除</button>
+  </div>
+</aside>
+
+<section class="display">
+  <div id="error" role="alert" hidden></div>
+  <div id="serialWarning" role="status" aria-live="polite" hidden><span id="serialWarningText"></span> <button id="lowerBaud" type="button">切换到 1 MBaud</button></div>
+  <div id="tuningWarning" role="status" hidden></div>
+
+  <div class="chart">
+    <div class="charthead"><span data-i18n="chart.power">功率谱</span><span id="cursor"></span></div>
+    <canvas id="spectrum" aria-label="接收功率谱"></canvas>
+    <div id="axis" class="axis"><canvas id="axisCanvas" aria-label="频率轴：上排是绝对频率，下排是相对中心频率的偏移（MHz，中心为 0，右正左负）；滚轮缩放，拖动平移，双击回到全跨度"></canvas></div>
+    <div id="meas" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;padding:7px 12px 9px;border-top:1px solid #293135;font:12.5px/1.45 Consolas,ui-monospace,monospace;color:#8f9ca2"></div>
+  </div>
+
+  <div id="splitter" title="拖动：调整频谱 / 瀑布图高度 · 双击：恢复默认"></div>
+
+  <div class="chart waterfall">
+    <div class="charthead"><span data-i18n="chart.waterfall">瀑布图 </span><span id="scale">−100 → −20 dBFS</span></div>
+    <canvas id="waterfall" aria-label="接收瀑布图历史"></canvas>
+    <div id="empty">
+      <div class="empty-icon">▥</div>
+      <h2 data-i18n="empty.title">连接 ESP-SDR 设备即可开始</h2>
+      <p class="empty-steps"><b data-i18n="empty.lead">三步上手：</b></p>
+      <ol class="empty-list">
+        <li data-i18n="empty.step1">给 ESP32 板刷入 ESP-SDR 固件</li>
+        <li data-i18n="empty.step2">用 USB 连接开发板，点右上角「连接」</li>
+        <li data-i18n="empty.step3">设置中心频率，观察频谱与瀑布图</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    <div><b id="fps">—</b> <span id="fpsLabel" data-i18n="footer.frames">帧/秒</span></div>
+    <div><b id="throughput">—</b> <span id="throughputLabel" data-i18n="footer.ksps">有效吞吐 kS/s</span></div>
+    <div><b id="latency">—</b> <span id="latencyLabel" data-i18n="footer.latencyIq">ms / 单次采集+传输</span></div>
+    <div><b id="peak">—</b> <span data-i18n="footer.peak">峰值 MHz</span></div>
+    <div id="crc">CRC —</div>
+    <nav class="source-links" aria-label="GitHub 源码">
+      <span data-i18n="footer.source">源码</span>
+      <a href="https://github.com/ESPARGOS/esp-sdr" target="_blank" rel="noopener noreferrer" data-i18n="footer.espSdr">esp-sdr 固件 ↗</a>
+      <a href="https://github.com/ESPARGOS/esp-web-sdr" target="_blank" rel="noopener noreferrer" data-i18n="footer.espWebSdr">esp-web-sdr 网页端 ↗</a>
+    </nav>
+  </footer>
+  <p class="desc footer-desc" data-i18n="desc.footer">状态栏：帧率、有效吞吐、单次采集耗时、峰值频点与 CRC 校验结果。把鼠标停在图上可读出任意频点的 dBFS。</p>
+</section>
+</main>
+
+</body>
+</html>

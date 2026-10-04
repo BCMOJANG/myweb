@@ -227,6 +227,8 @@
   <label class="check"><input id="autoscale" type="checkbox"><span data-i18n="display.autoscale">自动缩放纵轴</span></label>
   <label class="check"><input id="wifiChannels" type="checkbox" checked><span data-i18n="display.wifi">显示 2.4G WiFi 信道</span></label>
   <p class="desc" data-i18n="desc.wifi">在频谱上标出 2.4 GHz WiFi 的 1–14 信道（每个约 20 MHz 宽）。1、6、11 三个互不重叠，图中高亮，最值得关注；信号落在哪条色带里，就说明它占着哪个信道。鼠标停在频谱上还会直接报出信道号。</p>
+  <label class="check"><input id="djiBand" type="checkbox" checked><span data-i18n="display.dji">显示 DJI 2.4G 频段</span></label>
+  <p class="desc" data-i18n="desc.dji">在频谱上标出 2402.5–2472.5 MHz 这一段——DJI 无人机图传与遥控常用的 2.4 GHz 频段范围。该区间被淡紫色覆盖、两侧画实线边界，区间名标在频谱上方。用来快速判断图传信号有没有落进这个范围；纯显示层，不影响采样与 FFT。</p>
 
   <div class="actions">
     <button id="pause" disabled data-i18n="action.pause">暂停</button>

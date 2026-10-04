@@ -77,6 +77,8 @@ const I18N = {
   'display.autoscale': {zh: '自动缩放纵轴', en: 'Auto scale'},
   'display.wifi': {zh: '显示 2.4G WiFi 信道', en: 'Show 2.4 GHz WiFi channels'},
   'desc.wifi': {zh: '在频谱上标出 2.4 GHz WiFi 的 1–14 信道（每个约 20 MHz 宽）。1、6、11 三个互不重叠，图中高亮，最值得关注；信号落在哪条色带里，就说明它占着哪个信道。鼠标停在频谱上还会直接报出信道号。', en: 'Marks 2.4 GHz WiFi channels 1–14 (about 20 MHz each) on the spectrum. Channels 1, 6 and 11 do not overlap and are highlighted; the band a signal sits in is the channel it occupies. Hovering the spectrum also reports the channel number.'},
+  'display.dji': {zh: '显示 DJI 2.4G 频段', en: 'Show DJI 2.4 GHz band'},
+  'desc.dji': {zh: '在频谱上标出 2402.5–2472.5 MHz 这一段——DJI 无人机图传与遥控常用的 2.4 GHz 频段范围。该区间被淡紫色覆盖、两侧画实线边界，区间名标在频谱上方。用来快速判断图传信号有没有落进这个范围；纯显示层，不影响采样与 FFT。', en: 'Marks the 2402.5–2472.5 MHz span — the 2.4 GHz range DJI drones commonly use for video and control links. The interval is tinted with solid boundary lines and named above the spectrum. Purely a display layer; it does not affect sampling or the FFT.'},
   'action.pause': {zh: '暂停', en: 'Pause'},
   'action.clear': {zh: '清除', en: 'Clear'},
 

@@ -211,17 +211,43 @@ function drawWifi24Chips(bands,w,d){sc.save();sc.font=`${11*d}px Carlito,sans-se
  sc.restore();}
 try{const v=localStorage.getItem('espSdrWifi');if(v!==null)$('wifiChannels').checked=v==='1';}catch(e){}
 $('wifiChannels').onchange=()=>{try{localStorage.setItem('espSdrWifi',$('wifiChannels').checked?'1':'0');}catch(e){}draw();};
+// ---- DJI 2.4 GHz 频段标记（本副本新增：纯显示，不参与无线电逻辑）----------
+// 2402.5–2472.5 MHz 是 DJI 无人机图传/遥控常用的 2.4 GHz 频段范围。
+// 只画一个区间：淡紫底色 + 两侧实线边界 + 区间名，不做信道细分。
+const DJI24_LO=2402.5,DJI24_HI=2472.5;
+function dji24At(mhz){return mhz>=DJI24_LO&&mhz<=DJI24_HI;}
+function dji24Range(t,w){const rx0=t.x(DJI24_LO*1e6),rx1=t.x(DJI24_HI*1e6);
+ if(rx1<-1||rx0>w+1)return null;
+ return {rx0,rx1,x0:Math.max(0,rx0),x1:Math.min(w,rx1)};}
+function drawDji24Band(b,w,h,d){
+ if(b.x1>b.x0){sc.fillStyle='rgba(186,110,222,.13)';sc.fillRect(b.x0,0,b.x1-b.x0,h);}
+ // 边界只在真实位置落在画面内时才画，避免被裁到画布边上冒充边界
+ sc.save();sc.strokeStyle='rgba(206,140,240,.9)';sc.lineWidth=1.5*d;sc.beginPath();
+ if(b.rx0>=0&&b.rx0<=w){sc.moveTo(Math.round(b.rx0)+.5,0);sc.lineTo(Math.round(b.rx0)+.5,h);}
+ if(b.rx1>=0&&b.rx1<=w){sc.moveTo(Math.round(b.rx1)+.5,0);sc.lineTo(Math.round(b.rx1)+.5,h);}
+ sc.stroke();sc.restore();}
+// 区间名画在第二行（WiFi 信道号占第一行），缩放后仍钳在画面内
+function drawDji24Label(b,w,d){sc.save();sc.font=`${11*d}px Carlito,sans-serif`;sc.textAlign='center';sc.textBaseline='middle';
+ const s='DJI 2402.5–2472.5 MHz',tw=sc.measureText(s).width+10*d,cx=Math.max(tw/2+2*d,Math.min(w-tw/2-2*d,(b.x0+b.x1)/2));
+ sc.fillStyle='rgba(58,30,74,.92)';sc.fillRect(cx-tw/2,24*d,tw,16*d);
+ sc.strokeStyle='#c07ae8';sc.lineWidth=d;sc.strokeRect(cx-tw/2+.5,24*d+.5,tw,16*d);
+ sc.fillStyle='#e9c8ff';sc.fillText(s,cx,32*d);sc.restore();}
+try{const v=localStorage.getItem('espSdrDji');if(v!==null)$('djiBand').checked=v==='1';}catch(e){}
+$('djiBand').onchange=()=>{try{localStorage.setItem('espSdrDji',$('djiBand').checked?'1':'0');}catch(e){}draw();};
 function draw(){const w=spec.width,h=spec.height,d=Math.min(devicePixelRatio||1,2),floor=Number($('floor').value),range=Number($('range').value);sc.fillStyle='#182126';sc.fillRect(0,0,w,h);sc.lineWidth=d;sc.font=`${14*d}px Carlito,sans-serif`;
 for(let i=0;i<=4;i++){const y=i*h/4;sc.strokeStyle='#344047';sc.beginPath();sc.moveTo(0,y);sc.lineTo(w,y);sc.stroke();sc.fillStyle='#a1adb2';sc.fillText(`${Math.round(floor+range-i*range/4)}`,8*d,Math.max(16*d,y-5*d));}
-let wifi=null;
+let wifi=null,dji=null;
 {const c=latest?{frequency:latest.frequency,rate:latest.rate}:config(),t=axisTicks(c,w);sc.strokeStyle='#202a2f';sc.beginPath();for(const f of t.minors){const x=Math.round(t.x(f))+.5;sc.moveTo(x,0);sc.lineTo(x,h);}sc.stroke();sc.strokeStyle='#33424a';sc.beginPath();for(const f of t.major){const x=Math.round(t.x(f))+.5;sc.moveTo(x,0);sc.lineTo(x,h);}sc.stroke();
  if($('wifiChannels')?.checked)wifi=wifi24Bands(t,w);
  if(wifi)drawWifi24Bands(wifi,w,h,d);
+ if($('djiBand')?.checked)dji=dji24Range(t,w);
+ if(dji)drawDji24Band(dji,w,h,d);
  if(connected&&typeof drawTuneLimits==='function')drawTuneLimits(t,w,h,d);
  if(tuneFrequency!==c.frequency){const x=t.x(tuneFrequency*1e6);sc.save();sc.setLineDash([4*d,4*d]);sc.strokeStyle='#37c96490';sc.beginPath();sc.moveTo(x,0);sc.lineTo(x,h);sc.stroke();sc.restore();}drawAxis(c);}
 function line(values,color,fill){if(!values)return;sc.beginPath();const L=values.length-1,sp=view.b-view.a,i0=Math.max(0,Math.floor(view.a*L)-1),i1=Math.min(L,Math.ceil(view.b*L)+1);for(let i=i0;i<=i1;i++){const v=values[i],x=(i/L-view.a)/sp*w,y=Math.max(0,Math.min(h,(1-(v-floor)/range)*h));if(i>i0)sc.lineTo(x,y);else sc.moveTo(x,y);}sc.strokeStyle=color;sc.lineWidth=1.2*d;sc.stroke();if(fill){sc.lineTo(w,h);sc.lineTo(0,h);sc.closePath();const g=sc.createLinearGradient(0,0,0,h);g.addColorStop(0,'#37c96445');g.addColorStop(1,'#37c96403');sc.fillStyle=g;sc.fill();}}
 if($('hold').checked)line(maximum,'#e6b969',false);line(trace,'#37c964',true);
-if(wifi)drawWifi24Chips(wifi,w,d);}
+if(wifi)drawWifi24Chips(wifi,w,d);
+if(dji)drawDji24Label(dji,w,d);}
 // ---- 调谐时平移历史（本副本新增）------------------------------------------
 // 换中心频率后，只要频点数和跨度没变，老数据就是整体平移了若干个 bin。
 // 把迹线、最大保持、瀑布图历史一起平移，换频后立刻就能看到满血的最大保持，
@@ -402,7 +428,7 @@ $('frequency').closest('label').addEventListener('wheel',e=>{
 for(const b of document.querySelectorAll('[data-freq]'))b.onclick=()=>{$('frequency').value=b.dataset.freq;tuneFrequency=Number(b.dataset.freq);labels();};
 for(const id of ['floor','range'])$(id).oninput=()=>{$('floorValue').textContent=$('floor').value+' dBFS';$('rangeValue').textContent=$('range').value+' dB';$('scale').textContent=`${$('floor').value} → ${Number($('floor').value)+Number($('range').value)} dBFS`;redrawWater();draw();};
 $('hold').onchange=()=>{maximum=null;draw();};
-spec.onmousemove=e=>{if(!latest)return;const x=viewFrac(e.clientX,spec),i=Math.max(0,Math.min(latest.fft-1,Math.floor(x*latest.fft))),mhz=(latest.frequency*1e6+(x-.5)*latest.rate)/1e6,ch=typeof wifi24ChannelAt==='function'?wifi24ChannelAt(mhz):null;$('cursor').textContent=`${mhz.toFixed(5)} MHz${ch?` · WiFi ${ch}`:''} · ${latest.spectrum[i].toFixed(1)} dBFS`;};
+spec.onmousemove=e=>{if(!latest)return;const x=viewFrac(e.clientX,spec),i=Math.max(0,Math.min(latest.fft-1,Math.floor(x*latest.fft))),mhz=(latest.frequency*1e6+(x-.5)*latest.rate)/1e6,ch=typeof wifi24ChannelAt==='function'?wifi24ChannelAt(mhz):null,dji=typeof dji24At==='function'&&dji24At(mhz);$('cursor').textContent=`${mhz.toFixed(5)} MHz${ch?` · WiFi ${ch}`:''}${dji?' · DJI':''} · ${latest.spectrum[i].toFixed(1)} dBFS`;};
 function queueTune(e,el){if(suppressClick){suppressClick=false;return;}if(e.detail>1)return;clearTimeout(tuneClick);const x=e.clientX;tuneClick=setTimeout(()=>{if(connected&&latest){tuneFrequency=radio.nearestFrequency(latest.frequency+(viewFrac(x,el)-.5)*latest.rate/1e6);$('frequency').value=tuneFrequency;labels();}},250);}
 spec.onclick=e=>queueTune(e,spec);
 water.onclick=e=>queueTune(e,water);$('axisCanvas').onclick=e=>queueTune(e,$('axisCanvas'));

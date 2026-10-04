@@ -99,7 +99,7 @@ const I18N = {
   /* ================= 以下为 app.js 动态文案（英文回退即上游原文） ======= */
   'err.unknown': {zh: '未知操作'},
   'err.resume': {zh: '请修改设置后点击「继续」。'},
-  'err.webserial': {zh: '此浏览器不支持 WebSerial（网页串口）。请使用桌面版 Chrome、Edge 或 Firefox。', en: 'WebSerial support is required in this browser.'},
+  'err.webserial': {zh: '此浏览器不支持 Web Serial（网页串口）。桌面请用 Chrome / Edge 89+，或 Firefox 151+；安卓请用 Chrome 154+ 并配 USB OTG 转接线；iPhone / iPad 上任何浏览器都不支持。', en: 'WebSerial support is required in this browser.'},
   'link.install': {zh: '安装 / 更新 ESP-SDR 固件'},
   'det.max': {zh: '最大保持'},
   'det.avg': {zh: '平均'},
@@ -166,8 +166,13 @@ const I18N = {
   'radio.badHeader': {zh: 'WebSerial 响应头部无效'},
   'radio.emptyResponse': {zh: 'WebSerial 返回了空响应'},
   'radio.syncFailed': {zh: 'SDR 同步失败。请拔下 ESP32 设备再重新插入后重试；同时确认串口波特率设置、已刷入 ESP-SDR 固件，并关闭其他占用串口的 SDR 客户端。'},
-  'radio.needsWebSerial': {zh: '此浏览器不支持 WebSerial（网页串口）。', en: 'WebSerial support is required in this browser.'},
+  'radio.needsWebSerial': {zh: '此浏览器不支持 Web Serial（网页串口）。桌面请用 Chrome / Edge 89+，或 Firefox 151+；安卓请用 Chrome 154+ 并配 USB OTG 转接线；iPhone / iPad 上任何浏览器都不支持。', en: 'WebSerial support is required in this browser.'},
   'radio.needsSecure': {zh: '请通过 HTTPS 或 localhost 打开本页面。', en: 'Serve this page over HTTPS or localhost.'},
+  /* 进入页面时的能力检测提示（本副本新增）：直接说清这台设备为什么不行、该怎么换 */
+  'cap.ios': {zh: 'iPhone / iPad 上的所有浏览器（Safari、Chrome、Edge…）都不支持 Web Serial，无法连接 USB 串口设备。请改用电脑打开本页——Chrome、Edge、Firefox 151+ 都可以。', en: 'No browser on iPhone or iPad (Safari, Chrome, Edge…) supports Web Serial, so USB serial devices cannot be used here. Open this page on a computer instead — Chrome, Edge and Firefox 151+ all work.'},
+  'cap.android': {zh: '这个浏览器不支持 Web Serial，接不了 USB 串口设备。安卓上目前只有 Chrome 154 及以上支持（2026 年 4 月才加入），其它安卓浏览器大多还没跟上；请换用新版 Chrome，并用 USB OTG 转接线（或转接头）连接 ESP32，系统弹窗询问「允许访问 USB 设备」时选允许。', en: 'This browser does not support Web Serial, so USB serial devices cannot be used. On Android only Chrome 154+ supports it (added April 2026) and most other Android browsers have not caught up; switch to a current Chrome, connect the ESP32 through a USB OTG adapter, and allow USB access when the system asks.'},
+  'cap.desktop': {zh: '这个浏览器不支持 Web Serial，接不了 USB 串口设备。桌面端请用 Chrome / Edge 89 及以上、Opera 76 及以上，或 Firefox 151 及以上；Safari 至今没有支持。', en: 'This browser does not support Web Serial, so USB serial devices cannot be used. On desktop use Chrome / Edge 89+, Opera 76+, or Firefox 151+; Safari does not support it at all.'},
+  'cap.insecure': {zh: '当前页面不在安全上下文里，浏览器不会把串口开放给网页。请用 https:// 或 http://127.0.0.1 打开本页（直接双击本地 index.html 是不行的）。', en: 'This page is not in a secure context, so the browser will not expose serial ports to it. Open the page over https:// or http://127.0.0.1 (opening the local index.html file directly does not work).'},
   'radio.badSpecCaps': {zh: '片上频谱能力声明无效'},
   'radio.badLimits': {zh: '接收机参数范围无效'},
   'radio.unsupportedFirmware': {zh: '不支持的 SDR 固件：'},

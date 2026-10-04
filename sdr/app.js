@@ -542,8 +542,28 @@ $('autoscale').onchange=()=>{autoT=0;autoPk=null;};
 if(navigator.serial){navigator.serial.addEventListener?.('connect',()=>setTimeout(()=>$('connect').onclick({auto:true}),500));
  setTimeout(()=>$('connect').onclick({auto:true}),300);}
 
+// ---- 能力检测提示（本副本新增）--------------------------------------------
+// Web Serial 并非所有浏览器都有：桌面 Chromium 系很早就有，火狐 151+ 才有，
+// 安卓只有 Chrome 154+ 才有（2026 年 4 月才加入），而 iPhone / iPad 上任何
+// 浏览器都没有。与其等用户点「连接」才收到一句干巴巴的报错，不如一进页面
+// 就说清楚「这台设备为什么不行、该怎么换」。
+function capabilityNotice(){
+ const el=$('capability');if(!el)return;
+ const ua=(typeof navigator!=='undefined'&&navigator.userAgent)||'';
+ const insecure=typeof isSecureContext==='boolean'&&!isSecureContext;
+ const iOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ let text=null;
+ if(!navigator.serial)text=iOS?TXT('cap.ios','Web Serial is not available on iPhone or iPad.')
+  :/Android/i.test(ua)?TXT('cap.android','Web Serial needs Chrome 154+ on Android, plus a USB OTG adapter.')
+  :TXT('cap.desktop','Web Serial needs Chrome / Edge 89+, Opera 76+ or Firefox 151+.');
+ else if(insecure)text=TXT('cap.insecure','Open this page over https:// or http://127.0.0.1.');
+ if(!text){el.hidden=true;el.textContent='';return;}
+ el.hidden=false;el.textContent=text;
+}
+capabilityNotice();
+
 // ---- 中文增强版：语言切换后重刷动态文案 ------------------------------------
-window.refreshTexts=()=>{state();labels();};
+window.refreshTexts=()=>{state();labels();if(typeof capabilityNotice==='function')capabilityNotice();};
 
 // ---- 设置记忆（本副本新增）：刷新/关掉再开也保留上次的配置 -------------------
 // 存的都是纯界面参数；语言、零中频处理、WiFi 信道开关、分栏高度各自另有键，互不干扰。

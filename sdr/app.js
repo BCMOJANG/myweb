@@ -43,6 +43,9 @@ const lut=Array.from({length:256},(_,i)=>{const stops=[[3,8,23],[18,31,81],[38,6
 // view = visible fraction [a, b] of the received span; the waterfall keeps its
 // rows (newest first) so it can be redrawn for any view.
 let view={a:0,b:1},waterHist=[],drag=null,suppressClick=false,keepView=false,tuneClick=null;
+// 瀑布图开关（本副本新增）：关掉后整块收起来、把高度让给功率谱，并跳过每帧的
+// 瀑布图绘制（那一步是逐像素循环，是本页最费 CPU 的一块）。由 applyWaterfall() 维护。
+let waterOn=true,waterKeepH='';
 var specCov=0; // fraction of the received samples that went through an on-chip FFT
 function viewFrac(x,el){const r=el.getBoundingClientRect();return view.a+(x-r.left)/r.width*(view.b-view.a);}
 function setView(a,b,free){const nb=(latest&&latest.fft)||2048,minW=Math.max(8/nb,1/1024);let w=Math.max(minW,Math.min(1,b-a));
@@ -50,19 +53,44 @@ function setView(a,b,free){const nb=(latest&&latest.fft)||2048,minW=Math.max(8/n
 // released beyond the received span: retune the LO by whole MHz so the view centre is covered
 function retuneToView(){const c=latest||config(),span=c.rate/1e6,shift=Math.round(((view.a+view.b)/2-.5)*span);
  if(!connected||!shift){setView(view.a,view.b);return;}const lo0=loFrequency();tuneFrequency=radio.nearestFrequency(tuneFrequency+shift);$('frequency').value=tuneFrequency;
- const d=(loFrequency()-lo0)/span;keepView=true;setView(view.a-d,view.b-d);}
-// 拖动过程中实时调谐（上游只在松手时调谐）：整 MHz 步进 + 150 ms 节流，
-// 并让瀑布图历史跨过这次调谐保留下来（内容按绝对频率对齐，仍然有效）。
+ const d=(loFrequency()-lo0)/span;keepView=true;reanchorToLO();setView(view.a-d,view.b-d);}
+// 拖动过程中实时调谐（上游只在松手时调谐）：整 MHz 步进 + 节流。
+// 关键在节流值：换中心频率 = 把设备上的频谱流掐断重开，真机重启一次要几百毫秒。
+// 如果拖一下调一次（原来 150 ms），设备从头到尾都在重启，一帧都吐不出来——
+// 表现出来就是「拖动时数据完全不刷新，松手才刷新」。所以这里给到 400 ms，
+// 再叠一层「这条流必须已经吐出过第一帧」的保护：宁可调得粗一点，也要保证
+// 两次调谐之间数据是活的。松手时 retuneToView() 会做最后一次精确对齐。
+const LIVE_RETUNE_MS=400;
+// 调谐瞬间就把「显示坐标系」整体搬到新本振上：老数据按 bin 平移（内容仍对齐绝对
+// 频率），latest.frequency 立刻更新，并让下一帧重走一次 key 分支（此时平移量是 0，
+// 属于恒等平移，不会清屏）。只有这一步先做了，紧接着的 setView() 窗口补偿才是
+// 「有依据的」——否则补偿时数据还在老本振上，屏幕会先弹回原位，等新数据到了再弹
+// 回去，看起来就是「跟手 → 突然回到原来位置」的卡顿。
+function reanchorToLO(){
+ if(!latest||latest.frequency===tuneFrequency)return;
+ const nb=latest.fft,rate=latest.rate,k=Math.round((tuneFrequency-latest.frequency)*1e6*nb/rate);
+ if(Math.abs(k)>=nb){trace=null;maximum=null;waterHist=[];}          // 平移超过一整屏：只能清空重来
+ else if(k){const sh=shiftedHistory(tuneFrequency,nb,rate);if(sh){trace=sh.trace;maximum=sh.maximum;waterHist=sh.water;}}
+ latest={...latest,frequency:tuneFrequency};
+ key='';                       // 让下一帧重新走一次「频率变了」的分支（平移量为 0，等价于原地不动）
+ redrawWater();}
 function liveRetune(now){
- if(!connected||!latest||now-liveRetune.last<150)return false;
+ if(!connected||!latest||now-liveRetune.last<LIVE_RETUNE_MS)return false;
+ // 慢设备保护：数据流刚起步、还没吐出第一帧时先别拆它，否则会陷入
+ // 「重启→没数据→再重启」的死循环。1200 ms 兜底，避免设备卡住时永远调不了。
+ if(spectrumMode&&radio.hasSpec&&!(specFirstAt&&now-specFirstAt>=200)&&!(specStartAt&&now-specStartAt>=1200))return false;
  const span=latest.rate/1e6,shift=Math.round(((view.a+view.b)/2-.5)*span);
  if(!shift)return false;
  const lo0=loFrequency();tuneFrequency=radio.nearestFrequency(tuneFrequency+shift);
  if(loFrequency()===lo0)return false;
  liveRetune.last=now;$('frequency').value=tuneFrequency;
- const d=(loFrequency()-lo0)/span;keepView=true;setView(view.a-d,view.b-d);labels();
+ // 补偿必须带 free=true：满跨度时 setView 会把不带 free 的调用强行拉回 [0,1]，
+ // 补偿量被吃掉，画面就又会「跟手 → 弹一下」。带 free 才能保住这一瞬间的几何。
+ const d=(loFrequency()-lo0)/span;keepView=true;reanchorToLO();setView(view.a-d,view.b-d,true);labels();
  return true;}
 liveRetune.last=0;
+// 当前这条频谱流的起止时刻（给 liveRetune 的慢设备保护用）
+let specStartAt=0,specFirstAt=0;
 function wmap(W,nb){if(!waterMap||waterMap.W!==W||waterMap.nb!==nb||waterMap.a!==view.a||waterMap.b!==view.b){
  const lo=new Uint16Array(W),hi=new Uint16Array(W),span=view.b-view.a;
  for(let x=0;x<W;x++){const f0=view.a+x/W*span,f1=view.a+(x+1)/W*span;lo[x]=Math.max(0,Math.min(nb,Math.floor(f0*nb)));hi[x]=Math.max(lo[x],Math.min(nb,Math.ceil(f1*nb)));}
@@ -73,7 +101,7 @@ function paintRows(rows,y0){const n=rows.length;if(!n)return;const W=water.width
  for(let r=0;r<n;r++){const row=rows[r],base=r*W;for(let x=0;x<W;x++){let v=hi[x]>lo[x]?row[lo[x]]:-Infinity;for(let j=lo[x]+1;j<hi[x];j++)if(row[j]>v)v=row[j];let q=(v-floor)*scale;q=q<0?0:q>255?255:q|0;px[base+x]=lut32[q];}}
  wc.putImageData(img,0,y0);}
 function pushWater(rowsNewestFirst){waterHist=rowsNewestFirst.concat(waterHist);if(waterHist.length>water.height)waterHist.length=water.height;}
-function redrawWater(){wc.fillStyle='#11191e';wc.fillRect(0,0,water.width,water.height);paintRows(waterHist.slice(0,water.height),0);}
+function redrawWater(){if(!waterOn)return;wc.fillStyle='#11191e';wc.fillRect(0,0,water.width,water.height);paintRows(waterHist.slice(0,water.height),0);}
 for(const el of [spec,water,$('axisCanvas')]){
  el.addEventListener('wheel',e=>{clearTimeout(tuneClick);e.preventDefault();const f=viewFrac(e.clientX,el),k=e.deltaY<0?0.8:1.25,a=f-(f-view.a)*k;setView(a,a+(view.b-view.a)*k);},{passive:false});
  el.addEventListener('mousedown',e=>{clearTimeout(tuneClick);if(e.button===0)drag={x:e.clientX,a:view.a,b:view.b,el,moved:false};});
@@ -126,7 +154,7 @@ function error(e,communication=false){
 }
 function config(){return {frequency:loFrequency(),rate:Number($('rate').value),bits:Number($('bits').value),fft:Number($('fft').value),bandwidth:analogBandwidth,gainMode:$('gainMode').value,gain:Number($('gain').value),trigger:{mode:'free'}};}
 function clear(){trace=null;maximum=null;waterHist=[];if(!keepView)view={a:0,b:1};keepView=false;wc.fillStyle='#11191e';wc.fillRect(0,0,water.width,water.height);draw();}
-function resize(){const d=Math.min(devicePixelRatio||1,2);spec.width=Math.round(spec.clientWidth*d);spec.height=Math.round(spec.clientHeight*d);water.width=Math.round(water.clientWidth);water.height=Math.round(water.clientHeight);wc.fillStyle='#11191e';wc.fillRect(0,0,water.width,water.height);redrawWater();draw();labels();}
+function resize(){const d=Math.min(devicePixelRatio||1,2);spec.width=Math.round(spec.clientWidth*d);spec.height=Math.round(spec.clientHeight*d);if(waterOn){water.width=Math.round(water.clientWidth);water.height=Math.round(water.clientHeight);}wc.fillStyle='#11191e';wc.fillRect(0,0,water.width,water.height);redrawWater();draw();labels();}
 function fmtHz(hz){const a=Math.abs(hz);return a>=1e9?(hz/1e9).toFixed(6)+' GHz':a>=1e6?(hz/1e6).toFixed(3)+' MHz':a>=1e3?(hz/1e3).toFixed(1)+' kHz':hz.toFixed(0)+' Hz';}
 function measBar(c){
  const spec=connected&&spectrumMode,n=spec?specConfig().fft:c.fft,center=c.frequency*1e6,span=c.rate;
@@ -254,7 +282,10 @@ if(dji)drawDji24Label(dji,w,d);}
 // 而不用每次清零重新累积。频点数/跨度变了、或平移超过一整屏，才退回清空。
 function shiftedHistory(frequency,fft,rate){
  const p=shiftedHistory.last;shiftedHistory.last={frequency,fft,rate};
- if(!p||p.fft!==fft||p.rate!==rate||p.frequency===frequency)return null;
+ if(!p||p.fft!==fft||p.rate!==rate)return null;
+ // 频率没变（例如调谐瞬间已经由 reanchorToLO 平移到位的下一帧）：原样返回，
+ // 上层 clear() 之后立刻又赋值回来，等价于不动，不会闪一下空白。
+ if(p.frequency===frequency)return {trace:trace&&trace.length===fft?trace:null,maximum:maximum&&maximum.length===fft?maximum:null,water:waterHist};
  const k=Math.round((frequency-p.frequency)*1e6*fft/rate);
  if(!k||Math.abs(k)>=fft)return null;
  const mv=arr=>{const n=arr.length,out=new Float32Array(n);for(let i=0;i<n;i++){const j=i+k;out[i]=j>=0&&j<n?arr[j]:-Infinity;}return out;};
@@ -316,7 +347,17 @@ function state(){
  const warning=connected?radio.frequencyWarning(tuneFrequency):'';$('tuningWarning').textContent=warning;$('tuningWarning').hidden=!warning;$('frequency').classList.toggle('offband',!!warning);$('frequency').title=warning;
  for(const control of document.querySelectorAll('aside input,aside select'))control.disabled=!connected||!!radio.changingBaud;
  const specOk=connected&&radio.canStreamSpectrum;
- $('specControls').hidden=!specOk;$('specMode').disabled=!specOk||!!radio.changingBaud;
+ // 上游在设备不支持片上频谱时（未连接 / 固件没上报 SPEC / 走的是串口桥）会把整块
+ // 「片上频谱」藏起来，只剩 I/Q，看起来像是功能少了一个。这里改成：两种捕获模式
+ // 始终都显示，不能用时置灰，并在按钮下面说清楚原因。
+ $('specControls').hidden=false;$('specMode').disabled=!specOk||!!radio.changingBaud;
+ {const hint=$('specHint');
+  if(hint){
+   const why=!connected?TXT('capture.specOffline','Connect a device to use the on-chip spectrum: the ESP32 computes the FFT itself, so far less data crosses the serial link and the display refreshes much faster.')
+    :!radio.canStreamSpectrum?TXT('capture.specUnsupported','This firmware or serial transport does not report on-chip spectrum support, so only the I/Q stream is available. Update the ESP-SDR firmware, or use the board native USB port instead of a CH340/CP2102 bridge.')
+    :radio.changingBaud?TXT('btn.switching','Switching…'):'';
+   hint.hidden=!why;hint.textContent=why;
+  }}
  $('iqMode').disabled=!connected||!!radio.changingBaud;
  if(!specOk)spectrumMode=false;
  $('iqMode').setAttribute('aria-pressed',String(!spectrumMode));$('specMode').setAttribute('aria-pressed',String(spectrumMode));
@@ -339,6 +380,8 @@ function state(){
  $('status').textContent=connected?(paused?TXT('state.paused','Paused'):TXT('state.receiving','Receiving')):TXT('state.disconnected','Disconnected');
  $('connect').textContent=connected?TXT('btn.disconnect','Disconnect'):TXT('btn.connect','Connect ESP-SDR');$('light').classList.toggle('on',connected&&!paused);
  $('pause').disabled=!connected||!!radio.changingBaud;$('pause').textContent=paused?TXT('btn.resume','Resume'):TXT('btn.pause','Pause');
+ // 瀑布图显隐跟着连接状态走（未连接时强制显示，见 applyWaterfall）
+ if(typeof applyWaterfall==='function')applyWaterfall();
  
  for(const b of document.querySelectorAll('[data-freq]'))b.disabled=!connected||!!radio.changingBaud||(+b.dataset.freq===5500&&radio.family!=='C5')||!radio.validFrequency(+b.dataset.freq);
  $('gainMode').querySelector('[value=HARDWARE]').disabled=connected&&!radio.hasHardwareAgc;$('gainMode').disabled=!connected||!!radio.changingBaud||!radio.hasGain;
@@ -463,11 +506,12 @@ function specConfig(){
  return {...c,rate,fft,bits:10,stride,upf,maxHold:$('specDetector').value==='max'};
 }
 async function specLoop(){
- specPending=[];specLast=null;specCount=[];specCov=null;
+ specPending=[];specLast=null;specCount=[];specCov=null;specStartAt=performance.now();specFirstAt=0;
  const c=specConfig(),n=c.fft,rowMs=Number($('specRow').value);let agg=null,aggN=0,aggT=0;
  const changed=()=>{const m=specConfig();return m.frequency!==c.frequency||m.gainMode!==c.gainMode||m.gain!==c.gain||m.bandwidth!==c.bandwidth||m.maxHold!==c.maxHold||m.rate!==c.rate||m.fft!==c.fft||Number($('specRow').value)!==rowMs;};
  if(!specRAF)specRAF=requestAnimationFrame(specFrame);
  specInfo=await radio.spec(c,(h,bins,info)=>{
+  if(!specFirstAt)specFirstAt=performance.now();   // 本条流的第一帧（liveRetune 的慢设备保护用）
   specInfo=info;if(info.stats)specCov=info.stats.coverage/100;else if(h.pairs&&radio.spectrumContinuous(c.rate,n))specCov=h.ffts*n/h.pairs;else specCov=null;const s=specToDbfs(bins,h.step,n);
   if(!agg){agg=s;aggN=1;aggT=h.t;}else if(c.maxHold){for(let i=0;i<n;i++)if(s[i]>agg[i])agg[i]=s[i];}
   else{aggN++;for(let i=0;i<n;i++)agg[i]=10*Math.log10(((aggN-1)*10**(agg[i]/10)+10**(s[i]/10))/aggN);}
@@ -490,9 +534,11 @@ function renderSpec(rows){
  maximum=Array.from(cur,(v,i)=>maximum?Math.max(maximum[i],v):v);
  latest={frequency:c.frequency,rate:c.rate,fft:nb,spectrum:trace};draw();
  const n=Math.min(rows.length,water.height),floor=Number($('floor').value),range=Number($('range').value),W=water.width;
- wc.drawImage(water,0,0,W,water.height-n,0,n,W,water.height-n);
- // one pixel column = max of the bins it covers in the current view
- const newest=[];for(let r=0;r<n;r++)newest.push(rows[rows.length-1-r]);pushWater(newest);paintRows(newest,0);
+ if(waterOn){                                    // 关掉瀑布图时整块绘制工作都跳过（逐像素循环最费 CPU）
+  wc.drawImage(water,0,0,W,water.height-n,0,n,W,water.height-n);
+  // one pixel column = max of the bins it covers in the current view
+  const newest=[];for(let r=0;r<n;r++)newest.push(rows[rows.length-1-r]);pushWater(newest);paintRows(newest,0);
+ }
  autoScale(trace);
  let peak=0;for(let j=1;j<nb;j++)if(cur[j]>cur[peak])peak=j;
  const now=performance.now();while(specCount.length&&specCount[0]<now-1000)specCount.shift();
@@ -536,6 +582,25 @@ $('autoscale').onchange=()=>{autoT=0;autoPk=null;};
  sp.addEventListener('pointercancel',()=>{sd=null;sp.classList.remove('drag');});
  sp.addEventListener('pointerup',()=>{if(!sd)return;sd=null;sp.classList.remove('drag');try{localStorage.setItem('espSdrSplit',JSON.stringify([spec.clientHeight,water.clientHeight]));}catch(e){}});
  sp.addEventListener('dblclick',()=>{set(def[0],def[1]);try{localStorage.removeItem('espSdrSplit');}catch(e){}});}
+
+// ---- 瀑布图开关（本副本新增）----------------------------------------------
+// 「显示瀑布图」取消勾选后：整块瀑布图（含分栏拖条）收起来，高度让给功率谱，
+// 每帧的瀑布图绘制与历史累积一并跳过。未连接时强制显示——那块地方要放
+// 「三步上手」引导，藏起来会让人不知道该干什么。
+const WATER_KEY='espSdrWater';
+function applyWaterfall(){
+ const box=$('waterfallPanel'),sp=$('splitter'),el=$('waterfallOn');
+ const want=(el?el.checked:true)||!connected;
+ waterOn=want;waterKeepH=waterKeepH||'';
+ if(box)box.style.display=want?'':'none';
+ if(sp)sp.style.display=want?'':'none';
+ if(want){if(waterKeepH)spec.style.height=waterKeepH;}   // 空串表示「还没收起过」，交给 CSS / 分栏记忆里的高度
+ else{waterKeepH=spec.style.height||'';const total=spec.clientHeight+water.clientHeight+12;spec.style.height=(total>160?total:600)+'px';}
+ resize();redrawWater();
+}
+try{const v=localStorage.getItem(WATER_KEY);if(v!==null&&$('waterfallOn'))$('waterfallOn').checked=v==='1';}catch(e){}
+if($('waterfallOn'))$('waterfallOn').onchange=()=>{try{localStorage.setItem(WATER_KEY,$('waterfallOn').checked?'1':'0');}catch(e){}applyWaterfall();};
+applyWaterfall();
 
 // Start without a click: connect to the remembered port as soon as the page
 // loads and whenever a device is plugged in (only ports this site was granted).
